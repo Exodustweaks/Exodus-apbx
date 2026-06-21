@@ -1,0 +1,11 @@
+---
+title: Toggle hive
+description: Mounts or unmounts the default user hive to propagate settings to the system user template
+actions:
+  - !powerShell:
+      wait: true
+      oobe: false
+      command: |
+        $hive = 'HKU\AME_UserHive_Default'
+        $path = 'C:\Users\Default\NTUSER.DAT'
+        if (Test-Path $hive) {reg unload $hive} else {reg load $hive $path}

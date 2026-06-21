@@ -1,0 +1,11 @@
+@echo off
+
+powercfg -import "%windir%\misc\NovaOS.pow" 00000000-0000-0000-0000-000000000000 >nul 2>&1
+powercfg -setactive 00000000-0000-0000-0000-000000000000 >nul 2>&1
+for /f "tokens=4" %%g in ('powercfg -list ^| findstr /v "00000000-0000-0000-0000-000000000000" ^| findstr "Power Scheme GUID"') do (
+    powercfg -delete %%g >nul 2>&1
+)
+del %systemdrive%\windows\misc\NovaOS.pow >nul 2>&1
+
+powershell -NoProfile -ExecutionPolicy Bypass -Command "$pm=gwmi MSPower_DeviceEnable -Namespace root\wmi;$d=@();$d+=gwmi Win32_USBController;$d+=gwmi Win32_USBControllerDevice;$d+=gwmi Win32_USBHub;foreach($p in $pm){$i=$p.InstanceName.ToUpper();foreach($x in $d){if($i -like \"*$($x.PNPDeviceID)*\"){try{$p.Enable=$false;$p.psbase.Put()}catch{};break}}}" >nul 2>&1
+powershell -NoProfile -ExecutionPolicy Bypass -Command "gci 'HKLM:\SYSTEM\CurrentControlSet\Control\usbflags' -ea 0|?{$_.PSChildName -match '^[0-9A-F]{12}$'}|%{sp $_.PSPath 'DisableLPM' 1 -Type DWord -Force -ea 0};$zero=@('EnhancedPowerManagementEnabled','AllowIdleIrpInD3','DeviceSelectiveSuspended','DeviceResetNotificationEnabled','EnableSelectiveSuspend','SelectiveSuspendEnabled','SelectiveSuspendOn','SelectiveSuspendTimeout','WaitWakeEnabled','WakeEnabled','D3ColdSupported','DisableD3Cold','WdfDirectedPowerTransitionEnable','EnableIdlePowerManagement','IdleInWorkingState','IdleTimeoutInMS','IdleTimeoutPeriodInMilliSec','MinimumIdleTimeoutInMS','EnableHIPM','EnableHDDParking','EnableDIPM','SuppressInputInCS','SystemInputSuppressionEnabled','WdfDefaultIdleInWorkingState','WdfDirectedPowerTransitionChildrenOptional','WdfUseWdfTimerForPofx','SleepstudyState');$one=@('DisableIdlePowerManagement','DisableRuntimePowerManagement','EnhancedPowerManagementUseMonitor');gci 'HKLM:\SYSTEM\CurrentControlSet\Enum' -Recurse -ea 0|%{$p=$_.PSPath;foreach($z in $zero){try{if((gp $p $z -ea 0).$z -ne $null){sp $p $z 0 -Type DWord -Force}}catch{}};foreach($o in $one){try{if((gp $p $o -ea 0).$o -ne $null){sp $p $o 1 -Type DWord -Force}}catch{}}}"

@@ -1,0 +1,84 @@
+---
+title: PeakOS
+privilege: Admin
+actions:
+  - !registryValue:
+    path: 'HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Notifications\Settings\Windows.SystemToast.SecurityAndMaintenance'
+    value: 'Enabled'
+    type: REG_DWORD
+    data: '0'
+
+ # Disable UAC
+  - !registryValue: {path: 'HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System', value: 'EnableLUA', type:  REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System', value: 'PromptOnSecureDesktop', type:  REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System', value: 'ConsentPromptBehaviorAdmin', type:  REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System', value: 'ValidateAdminCodeSignatures', type:  REG_DWORD, data: '0'}
+
+  - !writeStatus {status: "Installing Software"}
+  - !task: {path: 'Tasks\software.yml'}
+  - !cmd: {command: '"Scripts\Batch\openshell.bat"', exeDir: true, runas: currentUserElevated, wait: true}
+
+
+  - !writeStatus {status: "Copying Files"}
+  - !cmd: {exeDir: true, command: 'xcopy "Windows" "%windir%" /E /I /Y'}
+  - !cmd: {exeDir: true, command: 'xcopy "PostInstall" "%USERPROFILE%\Desktop\PeakOS" /E /I /Y'}
+
+  - !writeStatus: {status: "Tweaking Registry"}
+
+  - !writeStatus: {status: "Disabling Windows Updates"}
+  - !task {path: 'Tasks\updates\update.yml'}
+  - !task {path: 'Tasks\updates\driver.yml'}
+
+  - !writeStatus {status: "Configuring Privacy"}
+  - !task {path: 'Tasks\registry\privacy.yml'}
+
+  - !writeStatus {status: 'Configuring Settings'}
+  - !task {path: 'Tasks\registry\settings.yml'}
+
+  - !writeStatus {status: "Applying Win32ps"}
+  - !task {path: 'Tasks\registry\win32.yml'}
+
+  - !writeStatus {status: "Removing AppX Packages"}
+  - !task {path: 'Tasks\package\appx.yml'}
+  - !cmd: {command: '"Scripts\Batch\oned.bat"', exeDir: true, runas: currentUserElevated, wait: true}
+
+  - !writeStatus {status: "Applying Scripts"}
+  - !cmd: {command: '"Scripts\Batch\power.bat"', exeDir: true, wait: true}
+  - !cmd: {command: '"Scripts\Batch\services.bat"', exeDir: true, runas: currentUserElevated, wait: true}
+  - !cmd: {command: '"Scripts\Batch\network.bat"', exeDir: true, runas: currentUserElevated, wait: true}
+  - !powerShell: {command: '.\Scripts\PowerShell\devices.ps1', exeDir: true, wait: true}
+  - !cmd: {command: '"Scripts\Batch\mitigations.bat"', exeDir: true, runas: currentUserElevated, wait: true}
+  - !cmd: {command: '"Scripts\Batch\mouse.bat"', exeDir: true, runas: currentUserElevated, wait: true}
+  - !cmd: {command: '"Scripts\Batch\audio.bat"', exeDir: true, runas: currentUserElevated, wait: true}
+  - !cmd: {command: '"Scripts\Batch\Animations.bat"', exeDir: true, runas: currentUserElevated, wait: true}
+  - !cmd: {command: '"Scripts\Batch\Animation-2.bat"', exeDir: true, runas: currentUserElevated, wait: true}
+  - !cmd: {command: '"Scripts\Batch\Background-Task-Logging.bat"', exeDir: true, runas: currentUserElevated, wait: true}
+  - !cmd: {command: '"Scripts\Batch\Badges.bat"', exeDir: true, runas: currentUserElevated, wait: true}
+  - !cmd: {command: '"Scripts\Batch\Disable-FTH.bat"', exeDir: true, runas: currentUserElevated, wait: true}
+  - !cmd: {command: '"Scripts\Batch\Disk-Space-Checks.bat"', exeDir: true, runas: currentUserElevated, wait: true}
+  - !cmd: {command: '"Scripts\Batch\Flashing.bat"', exeDir: true, runas: currentUserElevated, wait: true}
+  - !cmd: {command: '"Scripts\Batch\Font-Smoothing.bat"', exeDir: true, runas: currentUserElevated, wait: true}
+  - !cmd: {command: '"Scripts\Batch\Home-Gallery.bat"', exeDir: true, runas: currentUserElevated, wait: true}
+  - !cmd: {command: '"Scripts\Batch\Quality-Reduction.bat"', exeDir: true, runas: currentUserElevated, wait: true}
+  - !cmd: {command: '"Scripts\Batch\Search-Indexing.bat"', exeDir: true, runas: currentUserElevated, wait: true}
+  - !cmd: {command: '"Scripts\Batch\disable-services.bat"', exeDir: true, runas: currentUserElevated, wait: true}
+  - !cmd: {command: '"Scripts\Batch\optimize-task-scheduler.bat"', exeDir: true, runas: currentUserElevated, wait: true}
+  - !cmd: {command: 'reg import "Scripts\Registry\keyboard-cpl.reg"', exeDir: true, runas: currentUserElevated, wait: true}
+  - !cmd: {command: 'reg import "Scripts\Registry\mouse-cpl.reg"', exeDir: true, runas: currentUserElevated, wait: true}
+  - !cmd: {command: 'reg import "Scripts\Registry\raw-input-throttle-off.reg"', exeDir: true, runas: currentUserElevated, wait: true}
+
+  - !powerShell: {command: '.\Scripts\PowerShell\wallpaper.ps1 -Mode Desktop -ImagePath $env:systemroot\Web\Wallpaper\PeakOS.png', exeDir: true, runas: currentUserElevated}
+  - !powerShell: {command: '.\Scripts\PowerShell\wallpaper.ps1 -Mode LockScreen -ImagePath $env:systemroot\Web\Wallpaper\PeakOS.png', exeDir: true, runas: currentUserElevated}
+
+  - !writeStatus {status: "Optimizing PowerShell"}
+  - !run:
+    exeDir: true
+    exe: "powershell"
+    args: '-NoP -ExecutionPolicy Bypass -File Scripts\PowerShell\ngen.ps1'
+    weight: 50
+
+  - !writeStatus {status: "Finalizing"}
+  - !cmd: {command: '"Scripts\Batch\updhealth.bat"', exeDir: true, runas: currentUserElevated, wait: true}
+
+  - !powerShell: {command: '.\Scripts\PowerShell\cleanup.ps1', exeDir: true, wait: true}
+  - !cmd: {command: '"Scripts\Batch\final.bat"', exeDir: true, runas: currentUserElevated, wait: true}

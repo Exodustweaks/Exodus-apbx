@@ -1,0 +1,1 @@
+reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v TaskbarFlashing /t REG_DWORD /d 0 /f

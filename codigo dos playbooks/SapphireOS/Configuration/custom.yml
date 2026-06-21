@@ -1,0 +1,12 @@
+---
+title: Custom
+description: Custom SapphireOS configuration
+privilege: Admin
+actions: 
+- !task: {path: 'SapphireOS\tweaks\registry.yml'}
+- !task: {path: 'SapphireOS\tweaks\services.yml'}
+- !task: {path: 'SapphireOS\tweaks\commands.yml'}
+- !task: {path: 'SapphireOS\debloat\components.yml'}
+- !task: {path: 'SapphireOS\debloat\appx.yml'}
+- !task: {path: 'SapphireOS\tweaks\ScheduledTasks.yml'}
+- !task: {path: 'SapphireOS\FinalTasks.yml'}

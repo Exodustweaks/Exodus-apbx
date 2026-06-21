@@ -1,0 +1,239 @@
+---
+privilege: TrustedInstaller
+actions:
+  - !writeStatus: {status: "Applying Gaming Tweaks"}
+
+  - !registryValue: {path: 'HKLM\SYSTEM\CurrentControlSet\Control\GraphicsDrivers', value: 'IOMMUFlags', type: REG_DWORD, data: '0', option: "disable-mitigations"}
+  - !registryValue: {path: 'HKLM\SYSTEM\CurrentControlSet\Control', value: 'SvcHostSplitThresholdInKB', type: REG_DWORD, data: '4294967295'}
+  - !registryValue: {path: 'HKLM\SYSTEM\CurrentControlSet\Control', value: 'WaitToKillServiceTimeout', type: REG_SZ, data: '2000'}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Policies\Microsoft\Windows\AppCompat', value: 'AllowTelemetry', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Microsoft\FTH', value: 'Enabled', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management', value: 'DisablePagingExecutive', type: REG_DWORD, data: '1'}
+  - !registryValue: {path: 'HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\kernel', value: 'GlobalTimerResolutionRequests', type: REG_DWORD, data: '1'}
+  - !registryValue: {path: 'HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\kernel', value: 'SerializeTimerExpiration', type: REG_DWORD, data: '1'}
+
+  - !registryValue: {path: 'HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WINEVT\Channels\Microsoft-Windows-Superfetch/StoreLog', value: 'Enable', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WINEVT\Channels\Microsoft-Windows-Superfetch/Main', value: 'Enable', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WINEVT\Channels\Microsoft-Windows-Superfetch/PfApLog', value: 'Enable', type: REG_DWORD, data: '0'}
+
+  - !registryValue: {path: 'HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\fontdrvhost.exe\PerfOptions', value: 'IoPriority', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\sppsvc.exe\PerfOptions', value: 'CpuPriorityClass', type: REG_DWORD, data: '1'}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\sppsvc.exe\PerfOptions', value: 'IoPriority', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\fontdrvhost.exe\PerfOptions', value: 'CpuPriorityClass', type: REG_DWORD, data: '1'}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\sihost.exe\PerfOptions', value: 'CpuPriorityClass', type: REG_DWORD, data: '1'}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\sihost.exe\PerfOptions', value: 'IoPriority', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\lsass.exe\PerfOptions', value: 'CpuPriorityClass', type: REG_DWORD, data: '1'}
+
+  - !registryValue: {path: 'HKLM\SYSTEM\ControlSet001\Control\Power', value: 'HibernateEnabled', type: REG_DWORD, data: '0', option: "disable-power-saving"}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Microsoft\PolicyManager\current\device\Start', value: 'HideHibernate', type: REG_DWORD, data: '1', option: "disable-power-saving"}
+  - !run: {exe: "powercfg", args: "/hibernate off", option: "disable-power-saving"}
+
+  - !registryValue: {path: 'HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters', value: 'MaxUserPort', type: REG_DWORD, data: '65534'}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile', value: 'SystemResponsiveness', type: REG_DWORD, data: '10'}
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Multimedia\Audio', value: 'UserDuckingPreference', type: REG_DWORD, data: '3'}
+  - !registryValue: {path: 'HKU\.DEFAULT\Software\Microsoft\Multimedia\Audio', value: 'UserDuckingPreference', type: REG_DWORD, data: '3'}
+  - !registryValue: {path: 'HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters', value: 'TcpTimedWaitDelay', type: REG_DWORD, data: '120'}
+
+  - !registryValue: {path: 'HKLM\SYSTEM\CurrentControlSet\Services\AFD\Parameters', value: 'DynamicSendBufferDisable', type: REG_DWORD, data: '0'}
+
+  - !registryValue: {path: 'HKLM\SYSTEM\CurrentControlSet\Control\Power\PowerSettings\54533251-82be-4824-96c1-47b60b740d00\ea062031-0e34-4ff1-9b6d-eb1059334028', value: 'Attributes', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKLM\SYSTEM\CurrentControlSet\Control\Power\PowerSettings\54533251-82be-4824-96c1-47b60b740d00\5d76a2ca-e8c0-402f-a133-2158492d58ad', value: 'Attributes', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKLM\SYSTEM\CurrentControlSet\Control\Power\PowerSettings\54533251-82be-4824-96c1-47b60b740d00\2430ab6f-a520-44a2-9601-f7f23b5134b1', value: 'Attributes', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKLM\SYSTEM\CurrentControlSet\Control\Power\PowerSettings\54533251-82be-4824-96c1-47b60b740d00\0cc5b647-c1df-4637-891a-dec35c318583', value: 'Attributes', type: REG_DWORD, data: '0'}
+
+  - !registryValue: {path: 'HKLM\SYSTEM\CurrentControlSet\Control\GraphicsDrivers', value: 'TdrDelay', type: REG_DWORD, data: '10'}
+
+  - !registryValue: {path: 'HKLM\SYSTEM\CurrentControlSet\Services\mouclass\Parameters', value: 'MouseDataQueueSize', type: REG_DWORD, data: '100'}
+  - !registryValue: {path: 'HKLM\SYSTEM\CurrentControlSet\Services\kbdclass\Parameters', value: 'KeyboardDataQueueSize', type: REG_DWORD, data: '100'}
+  - !powerShell:
+    wait: true
+    errorAction: Ignore
+    command: |
+      $vals = @('RawMouseThrottleEnabled','RawMouseThrottleForced','RawMouseThrottleDuration','RawMouseThrottleLeeway')
+      $roots = @('Registry::HKU\.DEFAULT\Control Panel\Mouse')
+      Get-ChildItem 'Registry::HKU' -ErrorAction SilentlyContinue | Where-Object { $_.PSChildName -match '^S-1-5-21-' -and $_.PSChildName -notlike '*_Classes' } | ForEach-Object { $roots += ('Registry::' + $_.Name + '\Control Panel\Mouse') }
+      foreach ($r in $roots) {
+        if (Test-Path $r) {
+          foreach ($v in $vals) {
+            try { Remove-ItemProperty -Path $r -Name $v -Force -ErrorAction SilentlyContinue } catch {}
+          }
+        }
+      }
+      $global:LASTEXITCODE = 0
+
+  - !registryValue: {path: 'HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Diagnostics\Performance', value: 'DisableDiagnosticTracing', type: REG_DWORD, data: '1'}
+
+  - !registryValue: {path: 'HKLM\SYSTEM\CurrentControlSet\Control\Power', value: 'SleepStudyDisabled', type: REG_DWORD, data: '1', option: "disable-power-saving"}
+  - !registryValue: {path: 'HKLM\SYSTEM\CurrentControlSet\Services\LanmanWorkstation\Parameters', value: 'DisableBandwidthThrottling', type: REG_DWORD, data: '1'}
+  - !registryValue: {path: 'HKLM\SYSTEM\CurrentControlSet\Services\AFD\Parameters', value: 'FastSendDatagramThreshold', type: REG_DWORD, data: '64000'}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SoftwareProtectionPlatform\Activation', value: 'Manual', type: REG_DWORD, data: '1'}
+  - !registryValue: {path: 'HKLM\SYSTEM\CurrentControlSet\Control\Remote Assistance', value: 'fAllowToGetHelp', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKLM\SYSTEM\CurrentControlSet\Control\Power', value: 'CoalescingFlushInterval', type: REG_DWORD, data: '0', option: "disable-power-saving"}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows', value: 'RITdemonTimerPowerSaveElapse', type: REG_DWORD, data: '0', option: "disable-power-saving"}
+  - !registryValue: {path: 'HKLM\SYSTEM\CurrentControlSet\Control\CI\Config', value: 'VulnerableDriverBlocklistEnable', type: REG_DWORD, data: '0', option: "disable-mitigations"}
+  - !registryValue: {path: 'HKLM\SYSTEM\CurrentControlSet\Control\Power', value: 'EnergyEstimationEnabled', type: REG_DWORD, data: '0', option: "disable-power-saving"}
+  - !registryValue: {path: 'HKLM\SYSTEM\CurrentControlSet\Control\Power', value: 'CoalescingTimerInterval', type: REG_DWORD, data: '0', option: "disable-power-saving"}
+  - !registryValue: {path: 'HKLM\SYSTEM\CurrentControlSet\Control\Power', value: 'DeepIoCoalescingEnabled', type: REG_DWORD, data: '0', option: "disable-power-saving"}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows', value: 'RITdemonTimerPowerSaveCoalescing', type: REG_DWORD, data: '0', option: "disable-power-saving"}
+
+
+  - !registryValue: {path: 'HKCU\Control Panel\Desktop', value: 'ScreenSaveActive', type: REG_SZ, data: '0'}
+  - !registryValue: {path: 'HKCU\Control Panel\Mouse', value: 'MouseThreshold2', type: REG_SZ, data: '0'}
+  - !registryValue: {path: 'HKCU\Control Panel\Desktop', value: 'MenuShowDelay', type: REG_SZ, data: '1'}
+  - !registryValue: {path: 'HKCU\Control Panel\Mouse', value: 'ActiveWindowTracking', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKCU\Control Panel\Mouse', value: 'MouseSpeed', type: REG_SZ, data: '0'}
+  - !registryValue: {path: 'HKCU\Control Panel\Mouse', value: 'Beep', type: REG_SZ, data: 'No'}
+  - !registryValue: {path: 'HKCU\Control Panel\Mouse', value: 'MouseThreshold1', type: REG_SZ, data: '0'}
+  - !registryValue: {path: 'HKCU\Control Panel\Desktop', value: 'ScreenSaveTimeOut', type: REG_SZ, data: '0'}
+  - !registryValue: {path: 'HKCU\Control Panel\Mouse', value: 'MouseTrails', type: REG_SZ, data: '0'}
+  - !registryValue: {path: 'HKCU\Control Panel\Mouse', value: 'MouseAccel', type: REG_SZ, data: '0'}
+  - !registryValue: {path: 'HKCU\Control Panel\Desktop', value: 'JPEGImportQuality', type: REG_DWORD, data: '100'}
+  - !registryValue: {path: 'HKCU\Control Panel\Mouse', value: 'SnapToDefaultButton', type: REG_SZ, data: '0'}
+
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects', value: 'VisualFXSetting', type: REG_DWORD, data: '3', option: "fs-noanimations"}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects\FontSmoothing', value: 'DefaultValue', type: REG_DWORD, data: '1'}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects\TooltipAnimation', value: 'DefaultValue', type: REG_DWORD, data: '0', option: "fs-noanimations"}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects\DropShadow', value: 'DefaultValue', type: REG_DWORD, data: '0', option: "fs-noanimations"}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects\ListBoxSmoothScrolling', value: 'DefaultValue', type: REG_DWORD, data: '0', option: "fs-noanimations"}
+  - !registryValue: {path: 'HKCU\SOFTWARE\Microsoft\Windows\DWM', value: 'AlwaysHibernateThumbnails', type: REG_DWORD, data: '0', option: "fs-noanimations"}
+  - !registryValue: {path: 'HKCU\Control Panel\Desktop', value: 'UserPreferencesMask', type: REG_BINARY, data: '9032038010000000', option: "fs-noanimations"}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects\SelectionFade', value: 'DefaultValue', type: REG_DWORD, data: '0', option: "fs-noanimations"}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects\DragFullWindows', value: 'DefaultValue', type: REG_DWORD, data: '1'}
+  - !registryValue: {path: 'HKCU\Control Panel\Desktop\WindowMetrics', value: 'MinAnimate', type: REG_SZ, data: '0', option: "fs-noanimations"}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects\ControlAnimations', value: 'DefaultValue', type: REG_DWORD, data: '0', option: "fs-noanimations"}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects\CursorShadow', value: 'DefaultValue', type: REG_DWORD, data: '0', option: "fs-noanimations"}
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced', value: 'IconsOnly', type: REG_DWORD, data: '0', option: "fs-noanimations"}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects\ListviewAlphaSelect', value: 'DefaultValue', type: REG_DWORD, data: '0', option: "fs-noanimations"}
+  - !registryValue: {path: 'HKCU\Control Panel\Desktop', value: 'FontSmoothing', type: REG_SZ, data: '2'}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects\MenuAnimation', value: 'DefaultValue', type: REG_DWORD, data: '0', option: "fs-noanimations"}
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced', value: 'ListviewShadow', type: REG_DWORD, data: '1', option: "fs-noanimations"}
+  - !registryValue: {path: 'HKCU\Control Panel\Desktop', value: 'DragFullWindows', type: REG_SZ, data: '1', option: "fs-noanimations"}
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced', value: 'ListviewAlphaSelect', type: REG_DWORD, data: '0', option: "fs-noanimations"}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects\TaskbarAnimations', value: 'DefaultValue', type: REG_DWORD, data: '0', option: "fs-noanimations"}
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced', value: 'TaskbarAnimations', type: REG_DWORD, data: '0', option: "fs-noanimations"}
+  - !registryValue: {path: 'HKCU\SOFTWARE\Microsoft\Windows\DWM', value: 'EnableAeroPeek', type: REG_DWORD, data: '0', option: "fs-noanimations"}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects\AnimateMinMax', value: 'DefaultValue', type: REG_DWORD, data: '0', option: "fs-noanimations"}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects\DWMSaveThumbnailEnabled', value: 'DefaultValue', type: REG_DWORD, data: '0', option: "fs-noanimations"}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects\ListviewShadow', value: 'DefaultValue', type: REG_DWORD, data: '1', option: "fs-noanimations"}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects\ThumbnailsOrIcon', value: 'DefaultValue', type: REG_DWORD, data: '1'}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects\ComboBoxAnimation', value: 'DefaultValue', type: REG_DWORD, data: '0', option: "fs-noanimations"}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects\DWMAeroPeekEnabled', value: 'DefaultValue', type: REG_DWORD, data: '0', option: "fs-noanimations"}
+
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced', value: 'TaskbarGlomLevel', type: REG_DWORD, data: '2', option: "fs-w10-taskbar"}
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced', value: 'MMTaskbarGlomLevel', type: REG_DWORD, data: '2', option: "fs-w10-taskbar"}
+
+  - !powerShell:
+    wait: true
+    errorAction: Ignore
+    command: |
+      $sx = [byte[]]@(0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0xC0,0xCC,0x0C,0x00,0x00,0x00,0x00,0x00,0x80,0x99,0x19,0x00,0x00,0x00,0x00,0x00,0x40,0x66,0x26,0x00,0x00,0x00,0x00,0x00,0x00,0x33,0x33,0x00,0x00,0x00,0x00,0x00)
+      $sy = [byte[]]@(0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x38,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x70,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0xA8,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0xE0,0x00,0x00,0x00,0x00,0x00)
+      foreach ($scope in @('Registry::HKEY_CURRENT_USER','Registry::HKEY_USERS\.DEFAULT')) {
+        $mouse = """$scope\Control Panel\Mouse"""
+        $desktop = """$scope\Control Panel\Desktop"""
+        New-Item -Path $mouse -Force -ErrorAction SilentlyContinue | Out-Null
+        Set-ItemProperty -Path $mouse -Name 'SmoothMouseXCurve' -Value $sx -Type Binary -Force -ErrorAction SilentlyContinue
+        Set-ItemProperty -Path $mouse -Name 'SmoothMouseYCurve' -Value $sy -Type Binary -Force -ErrorAction SilentlyContinue
+        Remove-ItemProperty -Path $desktop -Name 'SCRNSAVE.EXE' -Force -ErrorAction SilentlyContinue
+      }
+      $global:LASTEXITCODE = 0
+  - !registryValue: {path: 'HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Power', value: 'HiberbootEnabled', type: REG_DWORD, data: '0', option: "disable-power-saving"}
+
+  - !writeStatus: {status: "Disabling WER"}
+  - !service: {name: 'WerSvc', operation: change, startup: 4}
+
+  - !writeStatus: {status: "Tuning Network Adapters", option: "disable-power-saving"}
+  - !powerShell:
+      option: "disable-power-saving"
+      wait: true
+      errorAction: Ignore
+      command: |
+        $nicClass = 'HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e972-e325-11ce-bfc1-08002be10318}'
+        if (Test-Path $nicClass) {
+          Get-ChildItem -Path $nicClass -ErrorAction SilentlyContinue | Where-Object { $_.PSChildName -match '^\d{4}$' } | ForEach-Object {
+            $key = $_.PSPath
+            try {
+              $driverDesc = (Get-ItemProperty -Path $key -Name 'DriverDesc' -ErrorAction SilentlyContinue).DriverDesc
+              if (-not $driverDesc) { return }
+              if ($driverDesc -match 'WAN Miniport|Kernel Debug|Virtual|Loopback|Teredo|ISATAP|6to4|Bluetooth') { return }
+              Set-ItemProperty -Path $key -Name 'PnPCapabilities' -Value 24 -Type DWord -Force -ErrorAction SilentlyContinue
+              foreach ($prop in @('*EEE','AdvancedEEE','EnableGreenEthernet','EnablePME','ULPMode','EnableSavePowerNow','ReduceSpeedOnPowerDown','WakeOnMagicPacket','WakeOnPattern','WolShutdownLinkSpeed','EnableWakeOnLan')) {
+                try {
+                  $existing = Get-ItemProperty -Path $key -Name $prop -ErrorAction SilentlyContinue
+                  if ($existing) {
+                    Set-ItemProperty -Path $key -Name $prop -Value '0' -Type String -Force -ErrorAction SilentlyContinue
+                  }
+                } catch {}
+              }
+            } catch {}
+          }
+        }
+        $global:LASTEXITCODE = 0
+
+  - !writeStatus: {status: "Tuning USB Devices", option: "disable-power-saving"}
+  - !powerShell:
+      option: "disable-power-saving"
+      wait: true
+      errorAction: Ignore
+      command: |
+        $usbRoot = 'HKLM:\SYSTEM\CurrentControlSet\Enum\USB'
+        if (Test-Path $usbRoot) {
+          Get-ChildItem -Path $usbRoot -ErrorAction SilentlyContinue | ForEach-Object {
+            Get-ChildItem -Path $_.PSPath -ErrorAction SilentlyContinue | ForEach-Object {
+              $params = Join-Path $_.PSPath 'Device Parameters'
+              if (Test-Path $params) {
+                try {
+                  Set-ItemProperty -Path $params -Name 'EnhancedPowerManagementEnabled' -Value 0 -Type DWord -Force -ErrorAction SilentlyContinue
+                  Set-ItemProperty -Path $params -Name 'SelectiveSuspendEnabled' -Value 0 -Type DWord -Force -ErrorAction SilentlyContinue
+                  Set-ItemProperty -Path $params -Name 'AllowIdleIrpInD3' -Value 0 -Type DWord -Force -ErrorAction SilentlyContinue
+                  Set-ItemProperty -Path $params -Name 'DeviceSelectiveSuspended' -Value 0 -Type DWord -Force -ErrorAction SilentlyContinue
+                } catch {}
+              }
+            }
+          }
+        }
+        try {
+          $netClass = '{4d36e972-e325-11ce-bfc1-08002be10318}'
+          $pnpMap = @{}
+          Get-PnpDevice -PresentOnly -ErrorAction SilentlyContinue | ForEach-Object {
+            if ($_.InstanceId) { $pnpMap[$_.InstanceId.ToUpper()] = $_.ClassGuid }
+          }
+          Get-CimInstance -Namespace root\wmi -ClassName MSPower_DeviceEnable -ErrorAction SilentlyContinue | ForEach-Object {
+            $entry = $_
+            $name = $entry.InstanceName
+            if (-not $name) { return }
+            $base = ($name -replace '_\d+$', '').ToUpper()
+            $guid = $pnpMap[$base]
+            if ($guid -and ($guid.ToString().ToLower().Replace('{','').Replace('}','') -eq $netClass.Replace('{','').Replace('}',''))) { return }
+            try { Set-CimInstance -InputObject $entry -Property @{ Enable = $false } -ErrorAction SilentlyContinue } catch {}
+          }
+        } catch {}
+        $global:LASTEXITCODE = 0
+  - !run: {exe: "powercfg", args: "-attributes 2a737441-1930-4402-8d77-b2bebba308a3 48e6b7a6-50f5-4782-a5d4-53bb8f07e226 -ATTRIB_HIDE", option: "disable-power-saving"}
+  - !run: {exe: "powercfg", args: "/setacvalueindex scheme_current 2a737441-1930-4402-8d77-b2bebba308a3 48e6b7a6-50f5-4782-a5d4-53bb8f07e226 0", option: "disable-power-saving"}
+  - !run: {exe: "powercfg", args: "/setdcvalueindex scheme_current 2a737441-1930-4402-8d77-b2bebba308a3 48e6b7a6-50f5-4782-a5d4-53bb8f07e226 0", option: "disable-power-saving"}
+  - !run: {exe: "powercfg", args: "/setactive scheme_current", option: "disable-power-saving"}
+
+  - !writeStatus: {status: "Disabling CPU Mitigations", option: "disable-mitigations"}
+  - !powerShell:
+      option: "disable-mitigations"
+      wait: true
+      errorAction: Ignore
+      command: |
+        $sys32 = Join-Path $env:windir 'System32'
+        $q = [char]34
+        foreach ($name in @('mcupdate_GenuineIntel.dll','mcupdate_AuthenticAMD.dll')) {
+          $src = Join-Path $sys32 $name
+          if (Test-Path $src) {
+            try {
+              $tkArgs = '/F ' + $q + $src + $q
+              Start-Process -FilePath 'takeown.exe' -ArgumentList $tkArgs -WindowStyle Hidden -Wait -ErrorAction SilentlyContinue
+              $icArgs = $q + $src + $q + ' /grant administrators:F'
+              Start-Process -FilePath 'icacls.exe' -ArgumentList $icArgs -WindowStyle Hidden -Wait -ErrorAction SilentlyContinue
+              $dst = $src + '.old'
+              if (Test-Path $dst) { Remove-Item -Path $dst -Force -ErrorAction SilentlyContinue }
+              Move-Item -Path $src -Destination $dst -Force -ErrorAction SilentlyContinue
+            } catch {}
+          }
+        }
+        $global:LASTEXITCODE = 0

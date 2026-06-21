@@ -1,0 +1,228 @@
+---
+privilege: TrustedInstaller
+actions:
+  - !registryValue: {path: 'HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System', value: 'EnableFirstLogonAnimation', type: REG_DWORD, data: '0'}
+
+  - !writeStatus: {status: "Killing Telemetry"}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection', value: 'AllowTelemetry', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Policies\Microsoft\Windows\Windows Search', value: 'AllowCortana', type: REG_DWORD, data: '0', option: "remove-ai"}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Microsoft\WindowsMitigation', value: 'UserPreference', type: REG_DWORD, data: '1'}
+
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager', value: 'SubscribedContent-370697Enabled', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications', value: 'GlobalUserDisabled', type: REG_DWORD, data: '1'}
+  - !registryValue: {path: 'HKCU\Software\Microsoft\InputPersonalization\TrainedDataStore', value: 'HarvestContacts', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\CloudStore', value: 'DisableRoamingSync', type: REG_DWORD, data: '1'}
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager', value: 'SubscribedContent-353696Enabled', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager', value: 'SubscribedContent-370700Enabled', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKCU\SOFTWARE\Microsoft\Siuf\Rules', value: 'NumberOfSIUFInPeriod', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\location', value: 'ShowGlobalPrompts', type: REG_DWORD, data: '0', option: "disable-printing"}
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\Search', value: 'BingSearchEnabled', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\AdvertisingInfo', value: 'Enabled', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement', value: 'ScoobeSystemSettingEnabled', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\Search', value: 'DeviceHistoryEnabled', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager', value: 'SubscribedContent-400923Enabled', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager', value: 'SubscribedContent-338393Enabled', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\AppManagement\AppSettings', value: 'ArchiveAppsEnabled', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager', value: 'SubscribedContent-353694Enabled', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Input\Settings', value: 'InsightsEnabled', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKCU\Software\Microsoft\InputPersonalization', value: 'RestrictImplicitInkCollection', type: REG_DWORD, data: '1'}
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\Search', value: 'BackgroundAppGlobalToggle', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\CPSS\Store\InkingAndTypingPersonalization', value: 'Value', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKCU\Software\Microsoft\InputPersonalization', value: 'RestrictImplicitTextCollection', type: REG_DWORD, data: '1'}
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\Search', value: 'HistoryViewEnabled', type: REG_DWORD, data: '0'}
+
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\GameDVR', value: 'CursorCaptureEnabled', type: REG_DWORD, data: '0', option: "remove-xbox"}
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\GameDVR', value: 'AudioCaptureEnabled', type: REG_DWORD, data: '0', option: "remove-xbox"}
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\GameDVR', value: 'MicrophoneCaptureEnabled', type: REG_DWORD, data: '0', option: "remove-xbox"}
+
+  - !registryValue: {path: 'HKLM\SOFTWARE\Microsoft\MdmCommon\SettingValues', value: 'LocationSyncEnabled', type: REG_DWORD, data: '0'}
+
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Speech_OneCore\Settings\OnlineSpeechPrivacy', value: 'HasAccepted', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Microsoft\Speech_OneCore\Settings\OnlineSpeechPrivacy', value: 'HasAccepted', type: REG_DWORD, data: '0'}
+
+  - !registryValue: {path: 'HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Notifications\Settings\Windows.SystemToast.Suggested', value: 'Enabled', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings', value: 'NOC_GLOBAL_SETTING_TOASTS_ENABLED', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Personalization\Settings', value: 'AcceptedPrivacyPolicy', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings', value: 'NOC_GLOBAL_SETTING_BADGE_ENABLED', type: REG_DWORD, data: '0'}
+
+  - !registryValue: {path: 'HKLM\SOFTWARE\Policies\Microsoft\Windows\WcmSvc\GroupPolicy', value: 'fMinimizeConnections', type: REG_DWORD, data: '3', option: "disable-wifi"}
+
+  - !registryValue: {path: 'HKLM\SOFTWARE\Policies\Microsoft\MRT', value: 'DontOfferThroughWUAU', type: REG_DWORD, data: '1'}
+
+  - !registryValue: {path: 'HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Spynet', value: 'LocalSettingOverrideSpynetReporting', type: REG_DWORD, data: '0', option: "disable-defender"}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Spynet', value: 'DisableBlockAtFirstSeen', type: REG_DWORD, data: '1', option: "disable-defender"}
+
+  - !writeStatus: {status: "Disabling Tracking Services"}
+  - !service: {name: 'diagnosticshub.standardcollector.service', operation: change, startup: 4}
+  - !service: {name: 'dmwappushservice', operation: change, startup: 4}
+  - !service: {name: 'wisvc', operation: change, startup: 4}
+  - !service: {name: 'MapsBroker', operation: change, startup: 4, option: "disable-printing"}
+  - !service: {name: 'lfsvc', operation: change, startup: 4, option: "disable-printing"}
+
+  - !service: {name: 'CDPUserSvc', operation: change, startup: 4}
+
+  - !powerShell:
+      wait: true
+      errorAction: Ignore
+      command: |
+        $sids = Get-ChildItem -Path 'Registry::HKU' -ErrorAction SilentlyContinue | Where-Object {
+          ($_.PSChildName -match '^S-1-5-21-' -and $_.PSChildName -notmatch '_Classes$') -or $_.PSChildName -match '^AME_UserHive_' -or $_.PSChildName -eq '.DEFAULT'
+        }
+        foreach ($s in $sids) {
+          $k = 'Registry::HKU\' + $s.PSChildName + '\Software\Microsoft\Windows\CurrentVersion\Feeds'
+          New-Item -Path $k -Force -ErrorAction SilentlyContinue | Out-Null
+          Set-ItemProperty -Path $k -Name 'ShellFeedsTaskbarViewMode' -Value 2 -Type DWord -Force -ErrorAction SilentlyContinue
+        }
+        $global:LASTEXITCODE = 0
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\SearchSettings', value: 'IsDynamicSearchBoxEnabled', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\SearchSettings', value: 'SafeSearchMode', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\SearchSettings', value: 'IsAADCloudSearchEnabled', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\SearchSettings', value: 'IsMSACloudSearchEnabled', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\SearchSettings', value: 'IsDeviceSearchHistoryEnabled', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\SearchSettings', value: 'IsMSFTSearchFeedEnabled', type: REG_DWORD, data: '1'}
+  - !registryValue: {path: 'HKU\.DEFAULT\Software\Microsoft\Windows\CurrentVersion\SearchSettings', value: 'IsMSFTSearchFeedEnabled', type: REG_DWORD, data: '1'}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Policies\Microsoft\Windows\Windows Search', value: 'DisableWebSearch', type: REG_DWORD, data: '1'}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Policies\Microsoft\Windows\Windows Search', value: 'ConnectedSearchUseWeb', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Policies\Microsoft\Windows\Explorer', value: 'DisableSearchBoxSuggestions', type: REG_DWORD, data: '1'}
+  - !registryValue: {path: 'HKCU\SOFTWARE\Policies\Microsoft\Windows\Explorer', value: 'DisableSearchBoxSuggestions', type: REG_DWORD, data: '1'}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Policies\Microsoft\Dsh', value: 'AllowNewsAndInterests', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\SearchSettings', value: 'IsMSFTCloudSearchEnabled', type: REG_DWORD, data: '0'}
+  - !taskKill: {name: "SearchHost", errorAction: Ignore}
+  - !taskKill: {name: "SearchApp", errorAction: Ignore}
+  - !service: {name: 'Telemetry', operation: change, startup: 4}
+  - !service: {name: 'GpuEnergyDrv', operation: change, startup: 4, option: "disable-power-saving"}
+  - !service: {name: 'NetBT', operation: change, startup: 4, option: "disable-wifi"}
+  - !service: {name: 'icssvc', operation: change, startup: 4, option: "disable-wifi"}
+  - !service: {name: 'lmhosts', operation: change, startup: 4}
+  - !service: {name: 'TrkWks', operation: change, startup: 4}
+  - !service: {name: 'edgeupdate', operation: change, startup: 4, option: "remove-edge"}
+  - !service: {name: 'edgeupdatem', operation: change, startup: 4, option: "remove-edge"}
+  - !service: {name: 'svsvc', operation: change, startup: 4}
+
+  - !service: {name: 'RetailDemo', operation: change, startup: 4}
+  - !service: {name: 'WMPNetworkSvc', operation: change, startup: 4}
+  - !service: {name: 'DialogBlockingService', operation: change, startup: 4}
+  - !service: {name: 'AssignedAccessManagerSvc', operation: change, startup: 4}
+  - !service: {name: 'AppVClient', operation: change, startup: 4}
+  - !service: {name: 'DevQueryBroker', operation: change, startup: 4}
+  - !service: {name: 'WSAIFabricSvc', operation: change, startup: 4}
+  - !service: {name: 'PimIndexMaintenanceSvc', operation: change, startup: 4}
+  - !service: {name: 'shpamsvc', operation: change, startup: 4}
+
+  - !service: {name: 'SgrmBroker', operation: change, startup: 4, option: "disable-defender"}
+  - !service: {name: 'SgrmAgent', operation: change, startup: 4, option: "disable-defender"}
+  - !service: {name: 'BcastDVRUserService', operation: change, startup: 4, option: "remove-xbox"}
+  - !service: {name: 'xbgm', operation: change, startup: 4, option: "remove-xbox"}
+  - !service: {name: 'XblAuthManager', operation: change, startup: 4, option: "remove-xbox"}
+  - !service: {name: 'XblGameSave', operation: change, startup: 4, option: "remove-xbox"}
+  - !service: {name: 'XboxNetApiSvc', operation: change, startup: 4, option: "remove-xbox"}
+  - !service: {name: 'uhssvc', operation: change, startup: 4}
+  - !service: {name: 'whesvc', operation: change, startup: 4}
+
+  - !service: {name: 'Fax', operation: change, startup: 4}
+  - !service: {name: 'RemoteRegistry', operation: change, startup: 4}
+  - !service: {name: 'RemoteAccess', operation: change, startup: 4}
+  - !service: {name: 'SharedAccess', operation: change, startup: 4, option: "disable-wifi"}
+  - !service: {name: 'MessagingService', operation: change, startup: 4}
+  - !service: {name: 'EFS', operation: change, startup: 4}
+  - !service: {name: 'CscService', operation: change, startup: 4}
+
+  - !service: {name: 'fdc', operation: change, startup: 4}
+  - !service: {name: 'flpydisk', operation: change, startup: 4}
+  - !service: {name: 'sfloppy', operation: change, startup: 4}
+  - !service: {name: 'serial', operation: change, startup: 4}
+  - !service: {name: 'serenum', operation: change, startup: 4}
+  - !service: {name: 'sermouse', operation: change, startup: 4}
+  - !service: {name: 'ErrDev', operation: change, startup: 4}
+  - !service: {name: 'CompositeBus', operation: change, startup: 4}
+
+  - !service: {name: 'SEMgrSvc', operation: change, startup: 4}
+  - !service: {name: 'SCardSvr', operation: change, startup: 4}
+  - !service: {name: 'ScDeviceEnum', operation: change, startup: 4}
+
+  - !service: {name: 'HvHost', operation: change, startup: 4, option: "disable-mitigations"}
+  - !service: {name: 'hvservice', operation: change, startup: 4, option: "disable-mitigations"}
+  - !service: {name: 'hvcrash', operation: change, startup: 4, option: "disable-mitigations"}
+  - !service: {name: 'hyperkbd', operation: change, startup: 4, option: "disable-mitigations"}
+  - !service: {name: 'hypervideo', operation: change, startup: 4, option: "disable-mitigations"}
+  - !service: {name: 'Vid', operation: change, startup: 4, option: "disable-mitigations"}
+  - !service: {name: 'vmicguestinterface', operation: change, startup: 4, option: "disable-mitigations"}
+  - !service: {name: 'vmicheartbeat', operation: change, startup: 4, option: "disable-mitigations"}
+  - !service: {name: 'vmickvpexchange', operation: change, startup: 4, option: "disable-mitigations"}
+  - !service: {name: 'vmicrdv', operation: change, startup: 4, option: "disable-mitigations"}
+  - !service: {name: 'vmicshutdown', operation: change, startup: 4, option: "disable-mitigations"}
+  - !service: {name: 'vmictimesync', operation: change, startup: 4, option: "disable-mitigations"}
+  - !service: {name: 'vmicvmsession', operation: change, startup: 4, option: "disable-mitigations"}
+  - !service: {name: 'vmicvss', operation: change, startup: 4, option: "disable-mitigations"}
+
+  - !powerShell:
+    wait: true
+    errorAction: Ignore
+    command: |
+      $restore = @{
+        'iphlpsvc'            = 2
+        'tcpipreg'            = 2
+        'Dnscache'            = 2
+        'NlaSvc'              = 2
+      }
+      foreach ($kv in $restore.GetEnumerator()) {
+        $k = 'HKLM:\SYSTEM\CurrentControlSet\Services\' + $kv.Key
+        if (Test-Path $k) {
+          try { Set-ItemProperty -Path $k -Name 'Start' -Value $kv.Value -Type DWord -Force -ErrorAction SilentlyContinue } catch {}
+        }
+      }
+      $global:LASTEXITCODE = 0
+
+  - !writeStatus: {status: "Disabling Telemetry Tasks"}
+  - !powerShell:
+    command: |
+      $tasks = @(
+        '\Microsoft\Windows\Application Experience\Microsoft Compatibility Appraiser',
+        '\Microsoft\Windows\Application Experience\StartupAppTask',
+        '\Microsoft\Windows\Customer Experience Improvement Program\Consolidator',
+        '\Microsoft\Windows\Customer Experience Improvement Program\UsbCeip',
+        '\Microsoft\Windows\DiskDiagnostic\Microsoft-Windows-DiskDiagnosticDataCollector',
+        '\Microsoft\Windows\Feedback\Siuf\DmClient',
+        '\Microsoft\Windows\Feedback\Siuf\DmClientOnScenarioDownload',
+        '\Microsoft\Windows\Flighting\FeatureConfig\ReconcileFeatures',
+        '\Microsoft\Windows\Flighting\FeatureConfig\UsageDataFlushing',
+        '\Microsoft\Windows\Flighting\FeatureConfig\UsageDataReporting',
+        '\Microsoft\Windows\Power Efficiency Diagnostics\AnalyzeSystem',
+        '\Microsoft\Windows\Windows Error Reporting\QueueReporting',
+        '\Microsoft\Windows\DiskFootprint\Diagnostics',
+        '\Microsoft\Windows\Device Information\Device',
+        '\Microsoft\Windows\Device Information\Device User',
+        '\Microsoft\Windows\Diagnosis\Scheduled',
+        '\Microsoft\Windows\Diagnosis\RecommendedTroubleshootingScanner',
+        '\Microsoft\Windows\MemoryDiagnostic\ProcessMemoryDiagnosticEvents',
+        '\Microsoft\Windows\MemoryDiagnostic\RunFullMemoryDiagnostic',
+        '\Microsoft\Windows\PI\Sqm-Tasks',
+        '\Microsoft\Windows\UpdateOrchestrator\Schedule Scan',
+        '\Microsoft\Windows\UpdateOrchestrator\Schedule Wake To Work',
+        '\Microsoft\Windows\UpdateOrchestrator\Start Oobe Expedite Work',
+        '\Microsoft\Windows\UpdateOrchestrator\StartOobeAppsScanAfterUpdate',
+        '\Microsoft\Windows\WindowsUpdate\Scheduled Start',
+        '\Microsoft\Windows\WindowsAI\Recall\PolicyConfiguration',
+        '\Microsoft\Windows\WindowsAI\Settings\InitialConfiguration',
+        '\Microsoft\Windows\Input\LocalUserSyncDataAvailable',
+        '\Microsoft\Windows\Input\MouseSyncDataAvailable'
+      )
+      foreach ($t in $tasks) { Disable-ScheduledTask -TaskName $t -ErrorAction SilentlyContinue }
+      $global:LASTEXITCODE = 0
+    wait: true
+
+  - !writeStatus: {status: "Disabling Location Tasks"}
+  - !powerShell:
+    option: "disable-printing"
+    command: |
+      $tasks = @(
+        '\Microsoft\Windows\Maps\MapsToastTask',
+        '\Microsoft\Windows\Maps\MapsUpdateTask',
+        '\Microsoft\Windows\Location\Notifications',
+        '\Microsoft\Windows\Location\WindowsActionDialog'
+      )
+      foreach ($t in $tasks) { Disable-ScheduledTask -TaskName $t -ErrorAction SilentlyContinue }
+      $global:LASTEXITCODE = 0
+    wait: true
+
+  - !writeStatus: {status: "Disabling Update Tasks"}
