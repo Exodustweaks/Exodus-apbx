@@ -367,7 +367,7 @@
         <div class="aviso-card" data-reveal>
             <div style="display:flex;align-items:center;gap:18px;margin-bottom:22px"><div style="width:48px;height:48px;border-radius:14px;background:rgba(246,194,71,.1);display:flex;align-items:center;justify-content:center;font-size:24px;color:var(--am);border:1px solid rgba(246,194,71,.15)"><i class="fas fa-exclamation-triangle"></i></div><h3 style="font-family:var(--fd);font-size:30px;letter-spacing:1px">Exemplo real do aviso no AME Beta</h3></div>
             <p style="color:var(--t2);font-size:16px;line-height:1.8;margin-bottom:26px">Ao carregar qualquer playbook .apbx no AME Wizard, o Defender exibirá um falso positivo. Normal com todos os playbooks AME.</p>
-            <div style="display:flex;justify-content:center;padding:18px;background:rgba(0,0,0,.3);border-radius:20px;border:1px solid rgba(255,255,255,.04)"><img class="aviso-img" src="https://github.com/Exodustweaks/Exodus-apbx/blob/main/aviso.png?raw=true" alt="Aviso" loading="lazy"></div>
+            <div style="display:flex;justify-content:center;padding:18px;background:rgba(0,0,0,.3);border-radius:20px;border:1px solid rgba(255,255,255,.04)"><img class="aviso-img" src="https://exodus-apbx.vercel.app/aviso.png" alt="Aviso" loading="lazy"></div>
         </div>
     </div></section>
 
@@ -409,7 +409,7 @@
                         <span class="tag tag-win11">Win 11</span>
                     </div>
                     <div style="display:flex;gap:12px;flex-wrap:wrap">
-                        <a href="https://github.com/Exodustweaks/Exodus-apbx/releases/latest" target="_blank" class="btn-main" onclick="return confirm('FSOS-XR6.3 — Modificado por kelvenapk. Continuar?')"><i class="fas fa-download"></i> Baixar FSOS-XR6.3</a>
+                        <a href="https://exodus-apbx.vercel.app/releases/latest" target="_blank" class="btn-main" onclick="return confirm('FSOS-XR6.3 — Modificado por kelvenapk. Continuar?')"><i class="fas fa-download"></i> Baixar FSOS-XR6.3</a>
                     </div>
                 </div>
                 <div style="text-align:center;padding:20px">
@@ -490,7 +490,7 @@
         const PLAYBOOKS = [
             { name:'AtlasOS', file:'AtlasOS%20v0.5.1%20RC2.apbx', code:'AtlasOS%20v0.5.1%20RC2', ver:'v0.5.1 RC2', cat:'performance', tags:['performance','gaming'], desc:'O playbook mais popular da comunidade AME.' },
             { name:'AtmosphereOS', file:'AtmosphereOS.apbx', code:'AtmosphereOS', ver:'latest', cat:'gaming', tags:['gaming'], desc:'Gaming de alta performance. Scheduler e DPC.' },
-            { name:'AtomPlayBook', file:'', dl:'https://github.com/Exodustweaks/Exodus-apbx/releases/latest', code:'', ver:'v0.0.5', cat:'lightweight', tags:['lightweight'], desc:'Minimalista e ultra-leve.' },
+            { name:'AtomPlayBook', file:'', dl:'https://exodus-apbx.vercel.app/releases/latest', code:'', ver:'v0.0.5', cat:'lightweight', tags:['lightweight'], desc:'Minimalista e ultra-leve.' },
             { name:'Eternity OS', file:'Eternity.v1.4.apbx', code:'Eternity.v1.4', ver:'v1.4', cat:'gaming', tags:['gaming','performance'], desc:'Gaming extremo com tweaks avançados.' },
             { name:'NovaOS', file:'NovaOS-V4.apbx', code:'NovaOS-V4', ver:'V4', cat:'gaming', tags:['gaming'], desc:'Quarta geração. Interrupções e GPU.' },
             { name:'PeakOS', file:'PeakOS%20V1.0.2%20.apbx', code:'PeakOS%20V1.0.2', ver:'v1.0.2', cat:'performance', tags:['performance'], desc:'Pico de desempenho. Serviços removidos.' },
@@ -500,10 +500,10 @@
             { name:'SOS', file:'SOS%200.2.3.apbx', code:'SOS%200.2.3', ver:'0.2.3', cat:'lightweight', tags:['lightweight'], desc:'Enxuto ao extremo. Boot rápido.' },
             { name:'SapphireOS', file:'SapphireOS.apbx', code:'SapphireOS', ver:'latest', cat:'performance', tags:['performance','gaming'], desc:'Refinado e estável.' },
             { name:'XOS', file:'XOS%20v0.445.apbx', code:'XOS%20v0.445', ver:'v0.445', cat:'gaming', tags:['gaming'], desc:'Estabilidade de framerate.' },
-            { name:'FSOS-XR6.3', file:'', dl:'https://github.com/Exodustweaks/Exodus-apbx/releases/latest', code:'', ver:'6.3', cat:'performance', tags:['performance','gaming'], desc:'Máxima performance.' }
+            { name:'FSOS-XR6.3', file:'', dl:'https://exodus-apbx.vercel.app/releases/latest', code:'', ver:'6.3', cat:'performance', tags:['performance','gaming'], desc:'Máxima performance.' }
         ];
-        const B_RAW = 'https://raw.githubusercontent.com/Exodustweaks/Exodus-apbx/main/playbooks/';
-        const B_CODE = 'https://github.com/Exodustweaks/Exodus-apbx/tree/main/codigo%20dos%20playbooks/';
+        const B_RAW = 'https://exodus-apbx.vercel.app/playbooks/';
+        const B_CODE = 'https://exodus-apbx.vercel.app/codigo%20dos%20playbooks/';
         const ICONS = { gaming:'gamepad', privacy:'shield-halved', performance:'tachometer-alt', lightweight:'feather' };
         const TAGS = { gaming:'Gaming', privacy:'Privacy', performance:'Performance', lightweight:'Leve' };
         function renderPBs(f='all') {
