@@ -14,3 +14,6 @@ Desktop.ini
 
 # Temp
 tmp_*/
+
+# Arquivos grandes movidos para Releases
+pesados/
