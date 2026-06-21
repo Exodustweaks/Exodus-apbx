@@ -409,8 +409,7 @@
                         <span class="tag tag-win11">Win 11</span>
                     </div>
                     <div style="display:flex;gap:12px;flex-wrap:wrap">
-                        <a href="https://raw.githubusercontent.com/Exodustweaks/Exodus-apbx/main/playbooks/FSOS-XR6.3.apbx" target="_blank" class="btn-main" onclick="return confirm('FSOS-XR6.3 — Modificado por kelvenapk. Continuar?')"><i class="fas fa-download"></i> Baixar FSOS-XR6.3</a>
-                        <a href="https://github.com/Exodustweaks/Exodus-apbx/tree/main/codigo%20dos%20playbooks/FSOS-XR6.3" target="_blank" class="btn-ghost"><i class="fas fa-code"></i> Ver Código</a>
+                        <a href="https://github.com/Exodustweaks/Exodus-apbx/releases/latest" target="_blank" class="btn-main" onclick="return confirm('FSOS-XR6.3 — Modificado por kelvenapk. Continuar?')"><i class="fas fa-download"></i> Baixar FSOS-XR6.3</a>
                     </div>
                 </div>
                 <div style="text-align:center;padding:20px">
@@ -491,7 +490,7 @@
         const PLAYBOOKS = [
             { name:'AtlasOS', file:'AtlasOS%20v0.5.1%20RC2.apbx', code:'AtlasOS%20v0.5.1%20RC2', ver:'v0.5.1 RC2', cat:'performance', tags:['performance','gaming'], desc:'O playbook mais popular da comunidade AME.' },
             { name:'AtmosphereOS', file:'AtmosphereOS.apbx', code:'AtmosphereOS', ver:'latest', cat:'gaming', tags:['gaming'], desc:'Gaming de alta performance. Scheduler e DPC.' },
-            { name:'AtomPlayBook', file:'AtomPlayBook.v0.0.5.apbx', code:'AtomPlayBook.v0.0.5', ver:'v0.0.5', cat:'lightweight', tags:['lightweight'], desc:'Minimalista e ultra-leve.' },
+            { name:'AtomPlayBook', file:'', dl:'https://github.com/Exodustweaks/Exodus-apbx/releases/latest', code:'', ver:'v0.0.5', cat:'lightweight', tags:['lightweight'], desc:'Minimalista e ultra-leve.' },
             { name:'Eternity OS', file:'Eternity.v1.4.apbx', code:'Eternity.v1.4', ver:'v1.4', cat:'gaming', tags:['gaming','performance'], desc:'Gaming extremo com tweaks avançados.' },
             { name:'NovaOS', file:'NovaOS-V4.apbx', code:'NovaOS-V4', ver:'V4', cat:'gaming', tags:['gaming'], desc:'Quarta geração. Interrupções e GPU.' },
             { name:'PeakOS', file:'PeakOS%20V1.0.2%20.apbx', code:'PeakOS%20V1.0.2', ver:'v1.0.2', cat:'performance', tags:['performance'], desc:'Pico de desempenho. Serviços removidos.' },
@@ -501,7 +500,7 @@
             { name:'SOS', file:'SOS%200.2.3.apbx', code:'SOS%200.2.3', ver:'0.2.3', cat:'lightweight', tags:['lightweight'], desc:'Enxuto ao extremo. Boot rápido.' },
             { name:'SapphireOS', file:'SapphireOS.apbx', code:'SapphireOS', ver:'latest', cat:'performance', tags:['performance','gaming'], desc:'Refinado e estável.' },
             { name:'XOS', file:'XOS%20v0.445.apbx', code:'XOS%20v0.445', ver:'v0.445', cat:'gaming', tags:['gaming'], desc:'Estabilidade de framerate.' },
-            { name:'FSOS-XR6.3', file:'FSOS-XR6.3.apbx', code:'FSOS-XR6.3', ver:'6.3', cat:'performance', tags:['performance','gaming'], desc:'Máxima performance.' }
+            { name:'FSOS-XR6.3', file:'', dl:'https://github.com/Exodustweaks/Exodus-apbx/releases/latest', code:'', ver:'6.3', cat:'performance', tags:['performance','gaming'], desc:'Máxima performance.' }
         ];
         const B_RAW = 'https://raw.githubusercontent.com/Exodustweaks/Exodus-apbx/main/playbooks/';
         const B_CODE = 'https://github.com/Exodustweaks/Exodus-apbx/tree/main/codigo%20dos%20playbooks/';
@@ -515,10 +514,11 @@
             g.innerHTML = '';
             l.forEach((p, i) => {
                 const cu = p.code ? B_CODE + p.code : '';
+                const dl = p.dl || (B_RAW + p.file);
                 const d = document.createElement('div');
                 d.className = 'pbc';
                 d.style.animationDelay = `${i * 0.06}s`;
-                d.innerHTML = `<div class="pbc-top"><div class="pbc-icon icon-${p.cat}"><i class="fas fa-${ICONS[p.cat]}"></i></div><div class="pbc-meta"><div class="pbc-ver">${p.ver}</div></div></div><div class="pbc-body"><div class="pbc-name">${p.name}</div><div class="pbc-desc">${p.desc}</div><div class="pbc-tags">${p.tags.map(t => `<span class="tag tag-${t}">${TAGS[t]}</span>`).join('')}<span class="tag tag-win10">Win 10</span><span class="tag tag-win11">Win 11</span></div></div><div class="pbc-footer"><div class="pbc-cmd">AME Beta → ${p.name}</div><a href="${B_RAW + p.file}" target="_blank" class="pbc-dl" onclick="return confirm('Modificado por kelvenapk. Continuar?')"><i class="fas fa-download"></i> Baixar</a>${cu ? `<a href="${cu}" target="_blank" class="pbc-code"><i class="fas fa-code"></i> Código</a>` : ''}</div>`;
+                d.innerHTML = `<div class="pbc-top"><div class="pbc-icon icon-${p.cat}"><i class="fas fa-${ICONS[p.cat]}"></i></div><div class="pbc-meta"><div class="pbc-ver">${p.ver}</div></div></div><div class="pbc-body"><div class="pbc-name">${p.name}</div><div class="pbc-desc">${p.desc}</div><div class="pbc-tags">${p.tags.map(t => `<span class="tag tag-${t}">${TAGS[t]}</span>`).join('')}<span class="tag tag-win10">Win 10</span><span class="tag tag-win11">Win 11</span></div></div><div class="pbc-footer"><div class="pbc-cmd">AME Beta → ${p.name}</div><a href="${dl}" target="_blank" class="pbc-dl" onclick="return confirm('Modificado por kelvenapk. Continuar?')"><i class="fas fa-download"></i> Baixar</a>${cu ? `<a href="${cu}" target="_blank" class="pbc-code"><i class="fas fa-code"></i> Código</a>` : ''}</div>`;
                 g.appendChild(d);
                 d.addEventListener('mousemove', e => {
                     const r = d.getBoundingClientRect();
