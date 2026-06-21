@@ -1,6 +1,6 @@
 # ExodusTweaks — Playbooks para Windows
 
-Playbooks da comunidade AME com suporte ao Windows 10 por kelvenapk.
+Playbooks da comunidade AME com suporte ao Windows 10 por kelvenapk
 
 ## O que é?
 
