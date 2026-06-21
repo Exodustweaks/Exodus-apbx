@@ -37,6 +37,7 @@ Playbooks `.apbx` da comunidade AME (AtlasOS, ReviOS, RapidOS, etc.) modificados
 | **SapphireOS** | Performance/Gaming | latest | [Baixar](https://raw.githubusercontent.com/Exodustweaks/Exodus-apbx/main/playbooks/SapphireOS.apbx) | [Codigo](https://github.com/Exodustweaks/Exodus-apbx/tree/main/codigo%20dos%20playbooks/SapphireOS) |
 | **SOS** | Leve | 0.2.3 | [Baixar](https://raw.githubusercontent.com/Exodustweaks/Exodus-apbx/main/playbooks/SOS%200.2.3.apbx) | [Codigo](https://github.com/Exodustweaks/Exodus-apbx/tree/main/codigo%20dos%20playbooks/SOS%200.2.3) |
 | **XOS** | Gaming | v0.445 | [Baixar](https://raw.githubusercontent.com/Exodustweaks/Exodus-apbx/main/playbooks/XOS%20v0.445.apbx) | [Codigo](https://github.com/Exodustweaks/Exodus-apbx/tree/main/codigo%20dos%20playbooks/XOS%20v0.445) |
+| **Vain** | Performance/Gaming | v14 hotfix6 | [Baixar](https://raw.githubusercontent.com/Exodustweaks/Exodus-apbx/main/playbooks/vain%20v14%20hotfix6.apbx) | [Codigo](https://github.com/Exodustweaks/Exodus-apbx/tree/main/codigo%20dos%20playbooks/vain%20v14%20hotfix6) |
 
 > **AtomPlayBook** e **FSOS-XR6.3** excedem 100MB e estao na pasta [Releases](https://github.com/Exodustweaks/Exodus-apbx/releases/latest).
 
