@@ -1,2 +1,0 @@
-$env:PATH="$([Runtime.InteropServices.RuntimeEnvironment]::GetRuntimeDirectory());$env:PATH"
-[AppDomain]::CurrentDomain.GetAssemblies() | ? Location | % { ngen install $_.Location | Out-Null; Split-Path $_.Location -Leaf }

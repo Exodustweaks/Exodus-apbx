@@ -1,7 +1,0 @@
----
-title: Detach AME Beta window
-actions:
-  - !powerShell:
-      oobe: false
-      exeDir: true
-      command: '.\AME.ps1 -Unpin'

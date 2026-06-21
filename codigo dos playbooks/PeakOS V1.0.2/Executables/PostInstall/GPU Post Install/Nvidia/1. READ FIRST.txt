@@ -1,4 +1,0 @@
-1. Install latest driver version with nvcleaninstall
-2. Nvidia profile inspector profile run it as admin drag into profile inspector then apply and close
-3. Run nvidia dwords bat 
-4. Restart PC

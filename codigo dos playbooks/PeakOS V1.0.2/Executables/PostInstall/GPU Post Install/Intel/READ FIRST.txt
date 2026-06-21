@@ -1,3 +1,0 @@
-Before applying any tweaks, install your GPU drivers first.
-Installing or updating GPU drivers can reset some tweaks,
-so make sure to apply all tweaks after the driver installation is complete.
