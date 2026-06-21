@@ -234,6 +234,26 @@
         .creator-stat-value{font-family:var(--fd);font-size:28px;color:var(--t1)}.creator-stat-label{font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:1px}
 
 
+        .highlights-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-bottom:32px}
+        .hl-card{background:linear-gradient(135deg,rgba(239,68,68,.08),rgba(248,113,113,.05));border:2px solid rgba(239,68,68,.3);border-radius:30px;padding:40px;display:grid;grid-template-columns:1fr auto;gap:32px;align-items:center;position:relative;overflow:hidden;transition:var(--ts)}
+        .hl-card:hover{transform:translateY(-6px);box-shadow:0 25px 50px -15px rgba(239,68,68,.2)}
+        .hl-card-vain{background:linear-gradient(135deg,rgba(53,213,109,.08),rgba(5,150,105,.05));border-color:rgba(53,213,109,.3)}
+        .hl-card-vain:hover{box-shadow:0 25px 50px -15px rgba(53,213,109,.2)}
+
+        .cl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(380px,1fr));gap:24px;margin-top:48px}
+        .cl-card{background:var(--card);backdrop-filter:blur(10px);border:1px solid var(--bdr2);border-radius:24px;padding:32px;transition:var(--ts);position:relative;overflow:hidden}
+        .cl-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#35d56d,#059669,transparent);opacity:0;transition:opacity .4s}
+        .cl-card:hover::before{opacity:1}
+        .cl-card:hover{transform:translateY(-6px);border-color:rgba(53,213,109,.25);box-shadow:0 20px 40px -12px rgba(53,213,109,.12)}
+        .cl-card h4{font-family:var(--fd);font-size:22px;letter-spacing:1px;margin-bottom:6px}
+        .cl-card .cl-ver{font-family:var(--fm);font-size:11px;color:var(--t3);margin-bottom:16px}
+        .cl-card ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px}
+        .cl-card li{display:flex;align-items:flex-start;gap:10px;color:var(--t2);font-size:14px;line-height:1.6}
+        .cl-card li::before{content:"";width:6px;height:6px;background:var(--gn);border-radius:50%;margin-top:8px;flex-shrink:0}
+
+        @media(max-width:900px){.highlights-grid{grid-template-columns:1fr}.cl-grid{grid-template-columns:1fr}}
+        @media(max-width:600px){.hl-card{grid-template-columns:1fr}.hl-card > div:last-child{display:none}}
+
         .stats-row{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--bdr2);border-radius:32px;overflow:hidden;margin:80px 0}
         .stat-cell{background:var(--card);backdrop-filter:blur(10px);padding:40px 28px;text-align:center;border-right:1px solid var(--bdr2);transition:background .3s}
         .stat-cell:last-child{border-right:none}
@@ -304,6 +324,7 @@
                 <a href="#como-usar" class="nav-a">Como Usar</a>
                 <a href="#amebeta" class="nav-a">AME Beta</a>
                 <a href="#downloads" class="nav-a">Downloads</a>
+                <a href="#changelogs" class="nav-a">Changelogs</a><a href="changelog-playbooks.html" target="_blank" class="nav-a">Diffs</a>
                 <a href="#faq" class="nav-a">FAQ</a>
                 <a href="https://github.com/Exodustweaks/Exodus-apbx" target="_blank" class="nav-cta"><i class="fab fa-github"></i> GitHub</a>
             </div>
@@ -312,7 +333,7 @@
         <div class="nav-progress" id="nav-progress"></div>
     </nav>
     <div class="mob-nav" id="mob-nav">
-        <a href="#sobre" class="mob-a">Playbooks</a><a href="#antivirus" class="mob-a">Antivírus</a><a href="#como-usar" class="mob-a">Como Usar</a><a href="#amebeta" class="mob-a">AME Beta</a><a href="#downloads" class="mob-a">Downloads</a><a href="#faq" class="mob-a">FAQ</a>
+        <a href="#sobre" class="mob-a">Playbooks</a><a href="#antivirus" class="mob-a">Antivírus</a><a href="#como-usar" class="mob-a">Como Usar</a><a href="#amebeta" class="mob-a">AME Beta</a><a href="#downloads" class="mob-a">Downloads</a><a href="#changelogs" class="mob-a">Changelogs</a><a href="#faq" class="mob-a">FAQ</a>
         <a href="https://github.com/Exodustweaks/Exodus-apbx" target="_blank" class="mob-a"><i class="fab fa-github"></i> GitHub</a>
     </div>
 
@@ -395,8 +416,8 @@
         <div class="pb-header"><div data-reveal><div class="s-eyebrow">DOWNLOADS</div><h2 class="s-title">Playbooks <span class="hl">Disponíveis</span></h2><p class="s-body" style="margin-top:8px">13 playbooks com suporte a Windows 10. Download direto do GitHub.</p></div>
         <div><div class="filter-wrap" id="filters"><button class="f-btn active" data-f="all">Todos</button><button class="f-btn" data-f="gaming">🎮 Gaming</button><button class="f-btn" data-f="privacy">🔒 Privacy</button><button class="f-btn" data-f="performance">⚡ Performance</button><button class="f-btn" data-f="lightweight">🍃 Leve</button></div><div class="pb-count" id="pb-count">Mostrando 13 playbooks</div></div></div>
         <div class="creator-highlight" data-reveal><img class="creator-avatar" id="creator-avatar" src="https://avatars.githubusercontent.com/u/113907052?v=4" alt="kelvenapk"><div class="creator-info"><span class="creator-label"><i class="fas fa-code-branch"></i> MODIFICADO POR</span><span class="creator-name" id="creator-name">kelvenapk</span><span class="creator-badge"><i class="fas fa-check-circle"></i> Todos os 13 playbooks adaptados para Windows 10</span></div><div class="creator-stats"><div class="creator-stat"><div class="creator-stat-value">13</div><div class="creator-stat-label">Playbooks</div></div><div class="creator-stat"><div class="creator-stat-value">Win10</div><div class="creator-stat-label">Suporte</div></div></div></div>
-        <div style="margin-bottom:32px" data-reveal>
-            <div style="background:linear-gradient(135deg,rgba(239,68,68,.08),rgba(248,113,113,.05));border:2px solid rgba(239,68,68,.3);border-radius:30px;padding:40px;display:grid;grid-template-columns:1fr auto;gap:32px;align-items:center;position:relative;overflow:hidden">
+        <div class="highlights-grid" style="margin-bottom:32px" data-reveal>
+            <div class="hl-card hl-card-fsos">
                 <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#ef4444,#f87171,transparent)"></div>
                 <div>
                     <div style="display:inline-flex;align-items:center;gap:8px;padding:4px 14px;background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.25);border-radius:999px;font-family:var(--fm);font-size:10px;color:#ef4444;letter-spacing:2px;text-transform:uppercase;margin-bottom:16px"><i class="fas fa-star" style="font-size:8px"></i> DESTAQUE</div>
@@ -417,8 +438,35 @@
                     <div style="font-family:var(--fm);font-size:11px;color:var(--t3);margin-top:12px;letter-spacing:1px;text-transform:uppercase">v6.3</div>
                 </div>
             </div>
+            <div class="hl-card hl-card-vain">
+                <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#35d56d,#059669,transparent)"></div>
+                <div>
+                    <div style="display:inline-flex;align-items:center;gap:8px;padding:4px 14px;background:rgba(53,213,109,.15);border:1px solid rgba(53,213,109,.25);border-radius:999px;font-family:var(--fm);font-size:10px;color:#35d56d;letter-spacing:2px;text-transform:uppercase;margin-bottom:16px"><i class="fas fa-fire" style="font-size:8px"></i> DESTAQUE</div>
+                    <h3 style="font-family:var(--fd);font-size:36px;letter-spacing:1px;margin-bottom:10px">Vain v14 hotfix6</h3>
+                    <p style="color:var(--t2);font-size:16px;line-height:1.7;margin-bottom:20px">Performance extrema com OpenShell, seleção de browser e power plan customizado. Modificado por kelvenapk com suporte a Win10 19041+ e Win11.</p>
+                    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px">
+                        <span class="tag tag-performance">⚡ Performance</span>
+                        <span class="tag tag-gaming">🎮 Gaming</span>
+                        <span class="tag tag-win10">Win 10</span>
+                        <span class="tag tag-win11">Win 11</span>
+                    </div>
+                    <div style="display:flex;gap:12px;flex-wrap:wrap">
+                        <a href="https://raw.githubusercontent.com/Exodustweaks/Exodus-apbx/main/playbooks/vain%20v14%20hotfix6.apbx" target="_blank" class="btn-main" style="background:linear-gradient(145deg,#059669,#35d56d);box-shadow:0 14px 32px -8px rgba(53,213,109,.4)" onclick="return confirm('Vain v14 hotfix6 — Modificado por kelvenapk. Continuar?')"><i class="fas fa-download"></i> Baixar Vain</a>
+                        <a href="https://github.com/Exodustweaks/Exodus-apbx/tree/main/codigo%20dos%20playbooks/vain%20v14%20hotfix6" target="_blank" class="pbc-code"><i class="fas fa-code"></i> Código</a>
+                    </div>
+                </div>
+                <div style="text-align:center;padding:20px">
+                    <div style="width:100px;height:100px;border-radius:24px;background:rgba(53,213,109,.1);border:1px solid rgba(53,213,109,.15);display:flex;align-items:center;justify-content:center;font-size:42px;color:var(--gn)"><i class="fas fa-fire"></i></div>
+                    <div style="font-family:var(--fm);font-size:11px;color:var(--t3);margin-top:12px;letter-spacing:1px;text-transform:uppercase">v14 hf6</div>
+                </div>
+            </div>
         </div>
         <div class="pb-grid" id="pb-grid"></div>
+    </div></section>
+
+    <section id="changelogs" class="sec pad" style="border-top:1px solid var(--bdr2)"><div class="wrap">
+        <div data-reveal><div class="s-eyebrow">CHANGELOGS</div><h2 class="s-title">O que o <span class="hl">kelvenapk</span> mudou?</h2><p class="s-body">Documentação detalhada das modificações feitas em cada playbook para adicionar suporte ao Windows 10. <a href="changelog-playbooks.html" target="_blank" style="color:var(--vi);text-decoration:underline">Ver diffs completos &rarr;</a></p></div>
+        <div class="cl-grid" id="cl-grid"></div>
     </div></section>
 
     <section class="sec"><div class="wrap"><div class="stats-row" data-reveal="scale">
@@ -539,6 +587,24 @@
             { q:'Posso reverter?', a:'Crie ponto de restauração antes.' },
             { q:'Qual escolher?', a:'Gaming: Vain, AtmosphereOS. Privacy: RapidOS, ReviOS.' }
         ];
+
+        const CHANGELOGS = [
+            { name:'AtlasOS', ver:'v0.5.1 RC2', changes:['Suporte Win10 já existente (19044/19045)','Disponibilizado para download no repositório'] },
+            { name:'AtmosphereOS', ver:'latest', changes:['Adicionado Builds 19042-19045 (Win10 20H2-22H2)','Descrição atualizada para "Win11 \\ 10"','Suporte a Win10 2004 até 22H2'] },
+            { name:'AtomPlayBook', ver:'v0.0.5', changes:['Suporte Win10 já existente (19044/19045)','Disponibilizado via GitHub Releases (112MB)'] },
+            { name:'Eternity OS', ver:'v1.4', changes:['Adicionado Builds 19042-19045 (Win10 20H2-22H2)','Tweaks de gaming extremo mantidos intactos'] },
+            { name:'NovaOS', ver:'V4', changes:['Adicionado Builds 19042-19045 (Win10 20H2-22H2)','Configurações de GPU preservadas'] },
+            { name:'PeakOS', ver:'v1.0.2', changes:['Suporte Win10 já existente (19044/19045)','Disponibilizado para download no repositório'] },
+            { name:'RapidOS', ver:'latest', changes:['Adicionado Builds 19042-19045 (Win10 20H2-22H2)','Customização YAML e tema preservados'] },
+            { name:'RaxOS', ver:'latest', changes:['Adicionado Build 19045 (Win10 22H2)','Suporte parcial — apenas 22H2'] },
+            { name:'ReviOS', ver:'26.04', changes:['Adicionado Builds 19044-19045 (Win10 21H2/22H2)','Equilíbrio privacidade/performance preservado'] },
+            { name:'SOS', ver:'0.2.3', changes:['Modificação na descrição para Win10','SupportedBuilds mantém apenas Win11'] },
+            { name:'SapphireOS', ver:'latest', changes:['Suporte Win10 já existente (19044/19045)','Disponibilizado para download no repositório'] },
+            { name:'XOS', ver:'v0.445', changes:['Suporte Win10 já existente (desde 1809)','Disponibilizado para download no repositório'] },
+            { name:'FSOS-XR6.3', ver:'6.3', changes:['Suporte Win10 já existente (19044/19045)','Disponibilizado via GitHub Releases (217MB)'] },
+            { name:'Vain', ver:'v14 hotfix6', changes:['Suporte Win10 já existente (19041-19045)','OpenShell default + seleção de browser','Power plan customizado + wallpaper Vain'] }
+        ];
+        function renderCL(){const g=document.getElementById('cl-grid');CHANGELOGS.forEach(c=>{const d=document.createElement('div');d.className='cl-card';d.setAttribute('data-reveal','');d.innerHTML=`<h4>${c.name}</h4><div class="cl-ver">${c.ver}</div><ul>${c.changes.map(ch=>`<li>${ch}</li>`).join('')}</ul>`;g.appendChild(d);io.observe(d)})}
         function renderFAQ(){const l=document.getElementById('faq-list');FAQS.forEach(f=>{const e=document.createElement('div');e.className='faq-item';e.innerHTML=`<button class="faq-q" onclick="this.parentElement.classList.toggle('open')">${f.q}<i class="fas fa-chevron-down"></i></button><div class="faq-answer"><div class="faq-body">${f.a}</div></div>`;l.appendChild(e)})}
         document.getElementById('filters').addEventListener('click',e=>{const b=e.target.closest('.f-btn');if(!b)return;document.querySelectorAll('.f-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active');renderPBs(b.dataset.f)});
         const nav = document.getElementById('nav');
@@ -549,7 +615,7 @@
         document.querySelectorAll('.hero-stats, .stats-row').forEach(el => io.observe(el));
         function ctr(el, t, d = 1200) { const s = Date.now(); (function tick() { const p = Math.min((Date.now() - s) / d, 1); el.textContent = Math.round((1 - Math.pow(1 - p, 3)) * t); if (p < 1) requestAnimationFrame(tick); else el.textContent = t; })(); }
         fetch('https://api.github.com/users/kelvenapk').then(r=>r.json()).then(d=>{if(d.avatar_url)document.getElementById('creator-avatar').src=d.avatar_url;if(d.name)document.getElementById('creator-name').textContent=d.name;else if(d.login)document.getElementById('creator-name').textContent=d.login}).catch(()=>{});
-        window.addEventListener('load',()=>{renderPBs();renderFAQ();setTimeout(()=>document.getElementById('loader').classList.add('gone'),2100)});
+        window.addEventListener('load',()=>{renderPBs();renderFAQ();renderCL();setTimeout(()=>document.getElementById('loader').classList.add('gone'),2100)});
 
         const dot = document.createElement('div');
         dot.className = 'cursor-dot';

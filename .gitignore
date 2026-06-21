@@ -17,3 +17,6 @@ tmp_*/
 
 # Arquivos grandes movidos para Releases
 pesados/
+
+# Arquivo privado (não vai pro GitHub)
+README-privado.md
