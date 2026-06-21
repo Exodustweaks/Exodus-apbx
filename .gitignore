@@ -1,0 +1,16 @@
+# Build artifacts
+*.tmp
+*.bak
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# IDE
+.vscode/
+.idea/
+
+# Temp
+tmp_*/

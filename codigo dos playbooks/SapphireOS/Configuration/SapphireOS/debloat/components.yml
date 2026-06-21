@@ -1,0 +1,39 @@
+---
+title: Components
+description: Remove windows components and files
+privilege: TrustedInstaller
+actions:
+
+  - !writeStatus: {status: "Configuring Components"}
+  - !taskKill: {name: "OneDriveStandaloneUpdater", ignoreErrors: true, option: "remove-onedrive"}
+  - !taskKill: {name: "OneDriveSetup", ignoreErrors: true, option: "remove-onedrive"}
+  - !taskKill: {name: "OneDrive*", ignoreErrors: true, option: "remove-onedrive"}
+  - !service: {name: "OneSyncSvc*",operation: delete, option: "remove-onedrive"}
+  - !run: {exe: 'cmd.exe', args: '/c for %a in ("SysWOW64" "System32") do (if exist "%windir%\%~a\OneDriveSetup.exe" ("%windir%\%~a\OneDriveSetup.exe" /uninstall)) && reg delete "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\{018D5C66-4533-4307-9B53-224DE2ED1FE6}" /f > nul 2>&1', option: 'remove-onedrive'}
+  - !file: {path: "%ProgramData%\\Microsoft\\Windows\\Start Menu\\Programs\\Administrative Tools\\Memory Diagnostics Tool.lnk"}
+  - !file: {path: "%ProgramData%\\Microsoft\\Windows\\Start Menu\\Programs\\Administrative Tools\\ODBC Data Sources (32-bit).lnk"}
+  - !file: {path: "%ProgramData%\\Microsoft\\Windows\\Start Menu\\Programs\\Administrative Tools\\ODBC Data Sources (64-bit).lnk"}
+  - !file: {path: "%ProgramData%\\Microsoft\\Windows\\Start Menu\\Programs\\Administrative Tools\\System Configuration.lnk"}
+  - !file: {path: "%ProgramData%\\Microsoft\\Windows\\Start Menu\\Programs\\Administrative Tools\\RecoveryDrive.lnk"}
+  - !file: {path: "%ProgramData%\\Microsoft\\Windows\\Start Menu\\Programs\\Administrative Tools\\Defragment and Optimize Drives.lnk"}
+  - !powerShell:
+    command: "set-executionpolicy unrestricted -force"
+    runas: currentUserElevated  
+    ignoreErrors: true
+    # Microsoft Edge
+  - !writeStatus: {status: "Removing Microsoft Edge", option: "remove-edge"}
+  - !taskKill: {name: "MicrosoftEdgeUpdate", ignoreErrors: true, option: "remove-edge"}
+  - !taskKill: {name: "msedge", ignoreErrors: true, option: "remove-edge"}
+  - !taskKill: {name: "MicrosoftEdge*", ignoreErrors: true, option: "remove-edge"}
+  - !taskKill: {name: "setup", ignoreErrors: true, pathContains: "\\Edge", option: "remove-edge"}
+
+  - !powerShell:
+    command: '.\EDGE.ps1 -UninstallEdge'
+    exeDir: true
+    runas: currentUserElevated
+    option: "remove-edge"
+    ignoreErrors: true
+    
+  - !file: {path: "%ProgramFiles(x86)%\\Microsoft\\Edge", option: "remove-edge", weight: 50}
+  
+  - !file: {path: "%ProgramFiles(x86)%\\Microsoft\\EdgeUpdate", option: "remove-edge"}

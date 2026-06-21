@@ -1,0 +1,303 @@
+---
+privilege: TrustedInstaller
+actions:
+  - !powerShell:
+    wait: true
+    command: |
+      Add-Type -AssemblyName System.Windows.Forms -ErrorAction SilentlyContinue
+      $title = 'FSOS-X Cannot Install'
+      $url = 'www.microsoft.com/software-download/windows11'
+      if (Test-Path -LiteralPath ($env:windir + '\FSOS')) {
+        $global:LASTEXITCODE = 0
+        return
+      }
+      $detected = $null
+      $productName = ''
+      try {
+        $pn = (Get-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion' -Name 'ProductName' -ErrorAction SilentlyContinue).ProductName
+        if ($pn) { $productName = [string]$pn }
+      } catch {}
+      $editionId = ''
+      try {
+        $ed = (Get-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion' -Name 'EditionID' -ErrorAction SilentlyContinue).EditionID
+        if ($ed) { $editionId = [string]$ed }
+      } catch {}
+      $haystack = ($productName + ' ' + $editionId).ToLower()
+      $oemHaystack = ''
+      try {
+        $oemInfo = Get-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\OEMInformation' -ErrorAction SilentlyContinue
+        if ($oemInfo) {
+          foreach ($n in @('Manufacturer','Model','SupportURL','SupportPhone','SupportHours','Logo','SupportProvider','SupportAppLink')) {
+            $v = $oemInfo.$n
+            if ($v) { $oemHaystack += ' ' + ([string]$v) }
+          }
+        }
+      } catch {}
+      $oemHaystack = $oemHaystack.ToLower()
+      if ($haystack -match '\bfsos\b' -and $haystack -notmatch 'fsos-x') {
+        $oldFsosLabel = $productName.Trim()
+        if (-not $oldFsosLabel) { $oldFsosLabel = 'a previous FSOS version' }
+        $msg = 'FSOS-X cannot be installed over ' + $oldFsosLabel + '. Please reinstall stock Windows first. The latest version can be downloaded from ' + $url
+        [System.Windows.Forms.MessageBox]::Show($msg, $title, [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Error, [System.Windows.Forms.MessageBoxDefaultButton]::Button1, [System.Windows.Forms.MessageBoxOptions]::DefaultDesktopOnly) | Out-Null
+        Stop-Process -Name 'AME Beta','AME Wizard Beta','AME','TrustedUninstaller.CLI' -Force -ErrorAction SilentlyContinue
+        $global:LASTEXITCODE = 1
+        exit 1
+      }
+      $osList = @(
+        @{ Name = 'AtlasOS';        Patterns = @('atlasos','atlas os');                  Paths = @('C:\Atlas');          Keys = @('HKLM:\SOFTWARE\AtlasOS') },
+        @{ Name = 'ReviOS';         Patterns = @('revios','revi os');                    Paths = @('C:\ReviOS');         Keys = @('HKLM:\SOFTWARE\Revision','HKLM:\SOFTWARE\ReviOS') },
+        @{ Name = 'Tiny11';         Patterns = @('tiny11','tiny 11');                    Paths = @('C:\Tiny11');         Keys = @() },
+        @{ Name = 'Ghost Spectre';  Patterns = @('ghost spectre','ghostspectre','spectre'); Paths = @('C:\Ghost Spectre'); Keys = @() },
+        @{ Name = 'Windows X-Lite'; Patterns = @('x-lite','xlite','windows x lite');     Paths = @('C:\X-Lite');         Keys = @() },
+        @{ Name = 'CactusOS';       Patterns = @('cactusos','cactus os');                Paths = @('C:\CactusOS');       Keys = @() },
+        @{ Name = 'KernelOS';       Patterns = @('kernelos','kernel os');                Paths = @('C:\KernelOS');       Keys = @() },
+        @{ Name = 'YukiOS';         Patterns = @('yukios','yuki os');                    Paths = @('C:\YukiOS');         Keys = @() },
+        @{ Name = 'NovaOS';         Patterns = @('novaos','nova os');                    Paths = @('C:\NovaOS');         Keys = @() },
+        @{ Name = 'FoxOS';          Patterns = @('foxos','fox os');                      Paths = @('C:\FoxOS');          Keys = @() },
+        @{ Name = 'ggOS';           Patterns = @('ggos','gg os');                        Paths = @('C:\ggOS');           Keys = @() },
+        @{ Name = 'SapphireOS';     Patterns = @('sapphireos','sapphire os');            Paths = @('C:\SapphireOS');     Keys = @() },
+        @{ Name = 'VainOS';         Patterns = @('vainos','vain os');                    Paths = @('C:\VainOS');         Keys = @() },
+        @{ Name = 'BlitzOS';        Patterns = @('blitzos','blitz os');                  Paths = @('C:\BlitzOS');        Keys = @() },
+        @{ Name = 'AtomOS';         Patterns = @('atomos','atom os');                    Paths = @('C:\AtomOS');         Keys = @() },
+        @{ Name = 'IrisOS';         Patterns = @('irisos','iris os');                    Paths = @('C:\IrisOS');         Keys = @() },
+        @{ Name = 'PeakOS';         Patterns = @('peakos','peak os');                    Paths = @('C:\PeakOS');         Keys = @() },
+        @{ Name = 'xOS';            Patterns = @(' xos ',' x os ');                      Paths = @('C:\xOS');            Keys = @() },
+        @{ Name = 'SOS';            Patterns = @(' sos ');                               Paths = @('C:\SOS');            Keys = @() },
+        @{ Name = 'WinterOS';       Patterns = @('winteros','winter os');                Paths = @('C:\WinterOS');       Keys = @() },
+        @{ Name = 'SynergyOS';      Patterns = @('synergyos','synergy os');              Paths = @('C:\SynergyOS');      Keys = @() },
+        @{ Name = 'KirbyOS';        Patterns = @('kirbyos','kirby os');                  Paths = @('C:\KirbyOS');        Keys = @() },
+        @{ Name = 'LuminOS';        Patterns = @('luminos','lumin os');                  Paths = @('C:\LuminOS');        Keys = @() }
+      )
+      foreach ($os in $osList) {
+        if ($detected) { break }
+        foreach ($pat in $os.Patterns) {
+          if ($haystack.Contains($pat)) { $detected = $os.Name; break }
+        }
+        if ($detected) { break }
+        foreach ($pat in $os.Patterns) {
+          if ($oemHaystack -and $oemHaystack.Contains($pat)) { $detected = $os.Name; break }
+        }
+        if ($detected) { break }
+        foreach ($pth in $os.Paths) {
+          if (Test-Path -LiteralPath $pth) { $detected = $os.Name; break }
+        }
+        if ($detected) { break }
+        foreach ($k in $os.Keys) {
+          if (Test-Path -LiteralPath $k) { $detected = $os.Name; break }
+        }
+      }
+      # Allow Windows 10 (19044 / 19045) explicitly
+      $build = $null
+      try {
+        $build = (Get-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion' -Name 'CurrentBuildNumber' -ErrorAction SilentlyContinue).CurrentBuildNumber
+        if ($build) { $build = [int]$build }
+      } catch {}
+      if ($detected -and -not ($build -in @(
+        19044, # Win10 22H2
+        19045  # Win10 23H2
+      ))) {
+        $msg = 'FSOS cannot be installed over ' + $detected + '. Supported versions are stock Windows 10 (19044/19045) and stock Windows 11 24H2/25H2. The latest version can be downloaded from ' + $url
+        [System.Windows.Forms.MessageBox]::Show($msg, $title, [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Error, [System.Windows.Forms.MessageBoxDefaultButton]::Button1, [System.Windows.Forms.MessageBoxOptions]::DefaultDesktopOnly) | Out-Null
+        Stop-Process -Name 'AME Beta','AME Wizard Beta','AME','TrustedUninstaller.CLI' -Force -ErrorAction SilentlyContinue
+        $global:LASTEXITCODE = 1
+        exit 1
+      }
+      $global:LASTEXITCODE = 0
+  - !writeStatus: {status: "Blocking Telemetry Endpoints"}
+  - !cmd: {command: 'mkdir "%WINDIR%\FSOS" 2>nul'}
+  - !cmd: {command: 'mkdir "%WINDIR%\FSOS\Tools" 2>nul'}
+  - !cmd:
+    option: "disable-defender"
+    command: 'powershell -NoP -C "try{Add-MpPreference -ExclusionPath $env:windir\FSOS -Force -EA SilentlyContinue}catch{}" >nul 2>nul || exit /b 0'
+  - !cmd:
+    exeDir: true
+    option: "disable-defender"
+    command: 'copy /y "nuke-defender-files.ps1" "%WINDIR%\FSOS\Tools\nuke-defender-files.ps1" >nul 2>nul || exit /b 0'
+  - !cmd:
+    exeDir: true
+    option: "disable-defender"
+    command: 'copy /y "nuke-defender-launcher.vbs" "%WINDIR%\FSOS\Tools\nuke-defender-launcher.vbs" >nul 2>nul || exit /b 0'
+  - !cmd: {command: 'cmd /c echo remove-bloat>>"%WINDIR%\FSOS\fsos-options.txt"', option: "remove-bloat"}
+  - !cmd: {command: 'cmd /c echo remove-xbox>>"%WINDIR%\FSOS\fsos-options.txt"', option: "remove-xbox"}
+  - !cmd: {command: 'cmd /c echo remove-store>>"%WINDIR%\FSOS\fsos-options.txt"', option: "remove-store"}
+  - !cmd: {command: 'cmd /c echo remove-edge>>"%WINDIR%\FSOS\fsos-options.txt"', option: "remove-edge"}
+  - !cmd: {command: 'cmd /c echo remove-ai>>"%WINDIR%\FSOS\fsos-options.txt"', option: "remove-ai"}
+  - !cmd: {command: 'cmd /c echo disable-defender>>"%WINDIR%\FSOS\fsos-options.txt"', option: "disable-defender"}
+  - !cmd: {command: 'cmd /c echo disable-bluetooth>>"%WINDIR%\FSOS\fsos-options.txt"', option: "disable-bluetooth"}
+  - !cmd: {command: 'cmd /c echo disable-wifi>>"%WINDIR%\FSOS\fsos-options.txt"', option: "disable-wifi"}
+
+  - !writeStatus: {status: "Importing Power Plans"}
+  - !powerShell:
+    wait: true
+    exeDir: true
+    errorAction: Ignore
+    command: |
+      powercfg -setactive 381b4222-f694-41f0-9685-ff5bb260df2e
+      Start-Sleep -Milliseconds 300
+
+      $amdGuid = 'e4c7a13f-5b9d-42a0-9e61-3a3f620460bc'
+      $intelGuid = 'a1c7b13e-6f90-4720-8178-836cd5339e8c'
+      $ultimateSourceGuid = 'e9a42b02-d5df-448d-aa00-03f14749eb61'
+
+      powercfg -delete $amdGuid 2>$null | Out-Null
+      powercfg -delete $intelGuid 2>$null | Out-Null
+
+      function Import-PowPlan {
+        param($file, $targetGuid, $name, $desc)
+        $out = powercfg -import (Resolve-Path $file).Path 2>&1
+        $line = $out | Where-Object { $_ -match '([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})' } | Select-Object -First 1
+        if ($line -and $line -match '([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})') {
+          $newGuid = $matches[1]
+          powercfg -duplicatescheme $newGuid $targetGuid 2>$null | Out-Null
+          powercfg -delete $newGuid 2>$null | Out-Null
+          powercfg -changename $targetGuid $name $desc 2>$null | Out-Null
+          return $true
+        }
+        return $false
+      }
+
+      Import-PowPlan 'power-amd.pow' $amdGuid 'FSOS AMD Gaming' 'FrameSync Labs AMD gaming power profile'
+
+      $dupOut = powercfg -duplicatescheme $ultimateSourceGuid 2>&1
+      $dupLine = $dupOut | Where-Object { $_ -match '([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})' } | Select-Object -First 1
+      if ($dupLine -and $dupLine -match '([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})') {
+        $newUltGuid = $matches[1]
+        powercfg -duplicatescheme $newUltGuid $intelGuid 2>$null | Out-Null
+        powercfg -delete $newUltGuid 2>$null | Out-Null
+        powercfg -changename $intelGuid 'Intel Gaming Power Plan' 'FrameSync Labs Intel gaming power profile' 2>$null | Out-Null
+      } else {
+        $highPerfGuid = '8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c'
+        $fbOut = powercfg -duplicatescheme $highPerfGuid 2>&1
+        $fbLine = $fbOut | Where-Object { $_ -match '([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})' } | Select-Object -First 1
+        if ($fbLine -and $fbLine -match '([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})') {
+          $newFbGuid = $matches[1]
+          powercfg -duplicatescheme $newFbGuid $intelGuid 2>$null | Out-Null
+          powercfg -delete $newFbGuid 2>$null | Out-Null
+          powercfg -changename $intelGuid 'Intel Gaming Power Plan' 'FrameSync Labs Intel gaming power profile' 2>$null | Out-Null
+        }
+      }
+
+  - !powerShell:
+    option: "power-amd"
+    wait: true
+    command: 'powercfg -s e4c7a13f-5b9d-42a0-9e61-3a3f620460bc'
+
+  - !powerShell:
+    option: "power-intel"
+    wait: true
+    command: 'powercfg -s a1c7b13e-6f90-4720-8178-836cd5339e8c'
+
+  - !powerShell:
+    option: "power-balanced"
+    wait: true
+    command: 'powercfg -s 381b4222-f694-41f0-9685-ff5bb260df2e'
+
+  - !writeStatus: {status: "Installing VC++ Redist"}
+  - !download: {url: 'https://aka.ms/vs/17/release/vc_redist.x64.exe', destination: 'vcredist.exe', overwrite: true, iso: false}
+  - !run: {exeDir: true, exe: 'vcredist.exe', args: '/install /quiet /norestart', showError: false}
+
+  - !writeStatus: {status: "Installing DirectX Runtime"}
+  - !powerShell:
+    exeDir: true
+    wait: true
+    errorAction: Ignore
+    command: |
+      $dxDir = Join-Path $PWD 'dxredist'
+      $dx = Join-Path $dxDir 'DXSETUP.exe'
+      if (Test-Path $dx) {
+        $psi = New-Object System.Diagnostics.ProcessStartInfo
+        $psi.FileName = $dx
+        $psi.Arguments = '/silent'
+        $psi.UseShellExecute = $false
+        $psi.CreateNoWindow = $true
+        $psi.WindowStyle = 'Hidden'
+        $psi.RedirectStandardOutput = $true
+        $psi.RedirectStandardError = $true
+        $proc = [System.Diagnostics.Process]::Start($psi)
+        $proc.WaitForExit(300000) | Out-Null
+      }
+      $global:LASTEXITCODE = 0
+
+  - !writeStatus: {status: "Installing Firefox", option: "browser-firefox"}
+  - !download:
+    option: "browser-firefox"
+    url: 'https://download.mozilla.org/?product=firefox-latest-ssl&os=win64&lang=en-US'
+    destination: 'FirefoxSetup.exe'
+    iso: false
+  - !run: {exeDir: true, exe: 'FirefoxSetup.exe', args: '/S', weight: 150, option: "browser-firefox"}
+  - !powerShell:
+    option: "browser-firefox"
+    wait: true
+    command: |
+      $target = """$env:ProgramFiles\Mozilla Firefox\firefox.exe"""
+      $targetX86 = """${env:ProgramFiles(x86)}\Mozilla Firefox\firefox.exe"""
+      $deadline = (Get-Date).AddMinutes(5)
+      while ((Get-Date) -lt $deadline) {
+        if (Test-Path $target) { break }
+        if (Test-Path $targetX86) { $target = $targetX86; break }
+        Start-Sleep -Seconds 2
+      }
+      if (Test-Path $target) {
+        $shell = New-Object -ComObject WScript.Shell
+        $sc = $shell.CreateShortcut("""$env:PUBLIC\Desktop\Firefox.lnk""")
+        $sc.TargetPath = $target
+        $sc.IconLocation = """$target,0"""
+        $sc.Save()
+      }
+      $global:LASTEXITCODE = 0
+
+  - !writeStatus: {status: "Installing Brave", option: "browser-brave"}
+
+  - !download: {url: 'https://laptop-updates.brave.com/latest/winx64', destination: 'BraveSetup.exe', package: 'brave', option: "browser-brave", iso: false}
+  - !run: {exeDir: true, exe: 'BraveSetup.exe', args: '/silent /install', weight: 150, option: "browser-brave"}
+
+  - !writeStatus: {status: "Installing Chrome", option: "browser-chrome"}
+  - !download:
+    option: "browser-chrome"
+    url: 'https://dl.google.com/chrome/install/latest/chrome_installer.exe'
+    destination: 'ChromeSetup.exe'
+    iso: false
+  - !run: {exeDir: true, exe: 'ChromeSetup.exe', args: '/silent /install', weight: 150, option: "browser-chrome"}
+  - !powerShell:
+    option: "browser-chrome"
+    wait: true
+    command: |
+      $candidates = @(
+        """$env:ProgramFiles\Google\Chrome\Application\chrome.exe""",
+        """${env:ProgramFiles(x86)}\Google\Chrome\Application\chrome.exe"""
+      )
+      $target = $candidates | Where-Object { Test-Path $_ } | Select-Object -First 1
+      if ($target) {
+        $shell = New-Object -ComObject WScript.Shell
+        $sc = $shell.CreateShortcut("""$env:PUBLIC\Desktop\Google Chrome.lnk""")
+        $sc.TargetPath = $target
+        $sc.IconLocation = """$target,0"""
+        $sc.Save()
+      }
+
+  - !writeStatus: {status: "Removing First-Logon Stubs"}
+  - !powerShell:
+    wait: true
+    errorAction: Ignore
+    command: |
+      foreach ($activeSetupRoot in @('HKLM:\SOFTWARE\Microsoft\Active Setup\Installed Components','HKLM:\SOFTWARE\Wow6432Node\Microsoft\Active Setup\Installed Components')) {
+        if (-not (Test-Path $activeSetupRoot)) { continue }
+        Get-ChildItem -Path $activeSetupRoot -ErrorAction SilentlyContinue | ForEach-Object {
+          try {
+            $name = (Get-ItemProperty -Path $_.PSPath -Name '(default)' -ErrorAction SilentlyContinue).'(default)'
+            $stub = (Get-ItemProperty -Path $_.PSPath -Name 'StubPath' -ErrorAction SilentlyContinue).StubPath
+            $isVendor = $false
+            if ($name -and $name -match 'MicrosoftEdge|Microsoft Edge|Edge Update|OneDrive|GoogleChrome|Google Chrome|Chrome Update|Mozilla|Firefox') { $isVendor = $true }
+            if ($stub -and $stub -match 'MicrosoftEdge|msedge|OneDrive|GoogleChrome|chrome\.exe|firefox|Mozilla') { $isVendor = $true }
+            if ($isVendor) {
+              if ($stub -and $stub.Length -gt 0) {
+                try { Set-ItemProperty -Path $_.PSPath -Name 'StubPath' -Value '' -Type ExpandString -Force -ErrorAction SilentlyContinue } catch {}
+                try { Remove-ItemProperty -Path $_.PSPath -Name 'StubPath' -Force -ErrorAction SilentlyContinue } catch {}
+              }
+              if ($name -and $name -match 'Firefox|Mozilla|Google Chrome|Microsoft Edge') {
+                try { Remove-Item -Path $_.PSPath -Recurse -Force -ErrorAction SilentlyContinue } catch {}
+              }
+            }
+          } catch {}
+        }
+      }

@@ -1,0 +1,11 @@
+---
+privilege: Admin
+actions:
+  - !writeStatus: {status: "Starting FSOS deployment"}
+  - !task: {path: 'Tasks\phase1-prepare.yml'}
+  - !task: {path: 'Tasks\phase2-strip.yml'}
+  - !task: {path: 'Tasks\phase3-harden.yml'}
+  - !task: {path: 'Tasks\phase4-gaming.yml'}
+  - !task: {path: 'Tasks\phase5-apply.yml'}
+  - !task: {path: 'Tasks\phase6-extended.yml'}
+  - !task: {path: 'Tasks\phase7-privacy.yml'}

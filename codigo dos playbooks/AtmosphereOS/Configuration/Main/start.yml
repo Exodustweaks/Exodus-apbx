@@ -1,0 +1,60 @@
+---
+title: Initial Configuration
+description: Performs the preliminary configuration
+actions:
+  - !status: {status: 'Setting the environment'}
+  - !powerShell:
+    wait: true
+    command: |
+      function Add-ToPath ([array]$Paths) {
+            $machine = [System.EnvironmentVariableTarget]::Machine
+            $seperator = [IO.Path]::PathSeparator
+            
+            $Paths | ForEach-Object {
+                  if (!(Test-Path $_ -PathType Container)) {
+                        Write-Error """Path '$_' doesn't exist as a container."""
+                  }
+            }
+
+            $newPath = @()
+            $newPath += [Environment]::GetEnvironmentVariable('PATH', $machine) -split $seperator
+            if ($newPath.Count -eq 0) { Write-Warning 'The PATH variable is currently empty.' }
+            $newPath += $Paths
+            $newPath = $newPath | Where-Object { $_ } | Select-Object -Unique
+
+            [Environment]::SetEnvironmentVariable('PATH', """$($newPath -join $seperator)""", $machine)
+      }
+
+      $modulesPath = """$([Environment]::GetFolderPath('Windows'))\AtmosphereModules"""
+      Add-ToPath """$modulesPath""", """$modulesPath\Tools""", """$modulesPath\Scripts"""
+  - !powerShell:
+    command: '.\Default.ps1'
+    exeDir: true
+    wait: true
+    runas: currentUserElevated
+    oobe: false
+  - !powerShell:
+    command: '.\Default.ps1 -Iso'
+    exeDir: true
+    wait: true
+    runas: currentUserElevated
+    oobe: only
+
+  ################ NO LOCAL BUILD ################
+
+  - !status: {status: 'Enabling DirectPlay'}
+  - !run: {exe: 'DISM.exe', args: '/Online /Enable-Feature /FeatureName:"DirectPlay" /NoRestart /All', weight: 30}
+  
+  - !status: {status: 'Disabling Internet Explorer', builds: [ '<22000' ]}
+  - !run: {exe: 'DISM.exe', args: '/Online /Disable-Feature /FeatureName:"Internet-Explorer-Optional-amd64" /NoRestart', weight: 30, builds: [ '<22000' ]}
+
+  - !status: {status: 'Disabling Maths Recognizer', builds: [ '<22000' ]}
+  - !run: {exe: 'DISM.exe', args: '/Online /Remove-Capability /CapabilityName:"MathRecognizer~~~~0.0.1.0" /NoRestart', weight: 30, builds: [ '<22000' ]}
+
+  - !status: {status: 'Disabling Steps Recorder'}
+  - !run: {exe: 'DISM.exe', args: '/Online /Remove-Capability /CapabilityName:"App.StepsRecorder~~~~0.0.1.0" /NoRestart', weight: 30}
+
+  - !status: {status: 'Cleaning the component store'}
+  - !run: {exe: 'DISM.exe', args: '/Online /Cleanup-Image /StartComponentCleanup', weight: 50, wait: false} # Stubborn
+
+  ################ END NO LOCAL BUILD ################

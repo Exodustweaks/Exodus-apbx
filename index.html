@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExodusTweaks — Playbooks para Windows</title>
+    <meta name="description" content="Playbooks da comunidade AME com suporte ao Windows 10 por kelvenapk.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script type="importmap">{ "imports": { "three": "https://unpkg.com/three@0.128.0/build/three.module.js" } }</script>
+    <style>
+        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+        :root{
+            --bg:#080508;--card:rgba(20,10,15,.75);
+            --bdr:rgba(255,255,255,.06);--bdr2:rgba(255,255,255,.10);--glow:rgba(239,68,68,.5);
+            --p:#ef4444;--pd:#7f1d1d;--pl:#fecaca;
+            --pk:#991b1b;--gn:#35d56d;--am:#f59e0b;
+            --v:#f87171;--vi:#fca5a5;
+            --t1:#f5f5f6;--t2:#9a9a9f;--t3:#555558;
+            --fd:'Bebas Neue',sans-serif;--fb:'Manrope',sans-serif;--fm:'Fira Code',monospace;
+            --shc:0 25px 45px -15px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.04);
+            --shh:0 35px 55px -20px rgba(239,68,68,.2),0 0 0 1px var(--glow);
+            --ts:all .45s cubic-bezier(.23,1,.32,1);--tb:all .5s cubic-bezier(.34,1.56,.64,1);
+        }
+        html{scroll-behavior:smooth}
+        body{font-family:var(--fb);background:var(--bg);color:var(--t1);line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased;margin:0}
+        a,button{cursor:pointer;text-decoration:none;color:inherit;border:none;background:none;font-family:inherit}
+        ::selection{background:#ef4444;color:#030303}
+        ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:#080508}::-webkit-scrollbar-thumb{background:#2a1015;border-radius:10px}::-webkit-scrollbar-thumb:hover{background:rgba(239,68,68,.3)}
+        .cursor-dot{width:8px;height:8px;background:#ef4444;border-radius:50%;position:fixed;pointer-events:none;z-index:10001;transition:transform .15s ease,background .2s;mix-blend-mode:difference}
+        .cursor-ring{width:20px;height:20px;border:1.5px solid rgba(239,68,68,.6);border-radius:50%;position:fixed;pointer-events:none;z-index:10001;transition:width .3s ease,height .3s ease,border-color .3s,background .3s}
+        .cursor-ring.hover{width:56px;height:56px;border-color:#ef4444;background:rgba(239,68,68,.08)}
+        .cursor-dot.hover{transform:scale(2.5);background:#fca5a5}
+        @media(max-width:900px){.cursor-dot,.cursor-ring{display:none}}
+
+
+        #bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.4}
+        .scan{position:fixed;inset:0;z-index:1;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(255,255,255,.04) 0 1px,transparent 1px 4px);opacity:.35}
+        .noise{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.02;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:150px;animation:nm .5s steps(3) infinite}
+        @keyframes nm{0%{transform:translate(0)}100%{transform:translate(3px,-2px)}}
+
+
+        @keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
+        @keyframes fadeLine{from{opacity:0;transform:translateX(-12px)}to{opacity:1;transform:none}}
+        @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+        @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+        @keyframes glow{0%,100%{box-shadow:0 0 20px rgba(239,68,68,.15)}50%{box-shadow:0 0 50px rgba(239,68,68,.3),0 0 80px rgba(248,113,113,.1)}}
+        @keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+        @keyframes textGlow{0%,100%{text-shadow:0 0 20px rgba(239,68,68,.3)}50%{text-shadow:0 0 40px rgba(239,68,68,.6),0 0 60px rgba(248,113,113,.15)}}
+        @keyframes borderPulse{0%,100%{border-color:rgba(255,255,255,.06)}50%{border-color:rgba(239,68,68,.2)}}
+        @keyframes gradientShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+        @keyframes tiltGlow{0%,100%{box-shadow:0 0 20px rgba(239,68,68,.1)}50%{box-shadow:0 0 40px rgba(239,68,68,.25),0 0 60px rgba(248,113,113,.1)}}
+        @keyframes ripple{0%{transform:scale(0);opacity:.5}100%{transform:scale(4);opacity:0}}
+        @keyframes floatRotate{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-12px) rotate(2deg)}}
+        @keyframes sb{0%,100%{transform:translateY(0);opacity:1}80%{transform:translateY(10px);opacity:0}}
+        @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+        @keyframes fillBar{from{width:0}to{width:100%}}
+
+        [data-reveal]{opacity:0;transform:translateY(30px);transition:opacity .8s ease,transform .8s ease}[data-reveal].visible{opacity:1;transform:none}
+        [data-reveal="left"]{transform:translateX(-40px)}[data-reveal="left"].visible{transform:none}
+        [data-reveal="right"]{transform:translateX(40px)}[data-reveal="right"].visible{transform:none}
+        [data-reveal="scale"]{transform:scale(.92)}[data-reveal="scale"].visible{transform:none}
+
+
+        #loader{position:fixed;inset:0;z-index:9000;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;transition:opacity .8s,visibility .8s}
+        #loader.gone{opacity:0;visibility:hidden;pointer-events:none}
+        .boot-lines{font-family:var(--fm);font-size:13px;color:var(--t2);width:360px;display:flex;flex-direction:column;gap:6px}
+        .boot-line{display:flex;gap:12px;opacity:0;animation:fadeLine .4s forwards}
+        .boot-line:nth-child(1){animation-delay:.1s}.boot-line:nth-child(2){animation-delay:.35s}.boot-line:nth-child(3){animation-delay:.6s}.boot-line:nth-child(4){animation-delay:.85s}.boot-line:nth-child(5){animation-delay:1.1s}
+        .b-ok{color:var(--gn)}.b-warn{color:var(--am)}.b-info{color:#ef4444}
+        .loader-logo{font-family:var(--fd);font-size:56px;letter-spacing:6px;background:linear-gradient(135deg,#fecaca,#7f1d1d);-webkit-background-clip:text;background-clip:text;color:transparent;animation:textGlow 2s infinite}
+        .boot-bar{width:320px;height:3px;background:rgba(255,255,255,.06);border-radius:10px;overflow:hidden;margin-top:8px}
+        .boot-progress{height:100%;background:linear-gradient(90deg,#ef4444,#f87171,var(--gn));background-size:200% 100%;animation:shimmer 1.5s linear infinite;border-radius:10px}
+
+
+        #nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:0 32px;transition:background .4s,backdrop-filter .4s,box-shadow .4s}
+        #nav.solid{background:rgba(8,5,8,.82);backdrop-filter:blur(24px) saturate(200%);box-shadow:0 6px 25px rgba(0,0,0,.5);border-bottom:1px solid rgba(239,68,68,.12)}
+        .nav-in{max-width:1280px;margin:0 auto;height:72px;display:flex;align-items:center;justify-content:space-between}
+        .nav-logo{display:flex;align-items:center;gap:10px;font-family:var(--fd);font-size:26px;letter-spacing:2px;color:var(--t1);transition:transform .3s}
+        .nav-logo:hover{transform:scale(1.02)}
+        .nav-logo-mark{width:38px;height:38px;background:linear-gradient(145deg,#ef4444,#f87171);border-radius:12px;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 18px rgba(239,68,68,.3)}
+        .nav-links{display:flex;align-items:center;gap:8px}
+        .nav-a{padding:8px 18px;font-size:14px;font-weight:600;color:var(--t2);border-radius:30px;transition:var(--ts);letter-spacing:.3px}
+        .nav-a:hover{color:#fff;background:rgba(239,68,68,.1);text-shadow:0 0 12px rgba(239,68,68,.3)}
+        .nav-cta{display:flex;align-items:center;gap:8px;padding:10px 22px;background:linear-gradient(145deg,#ef4444,#dc2626);border-radius:40px;color:#030303;font-weight:700;font-size:13px;box-shadow:0 8px 22px -6px rgba(239,68,68,.5);transition:var(--tb);margin-left:14px}
+        .nav-cta:hover{transform:scale(1.03);box-shadow:0 14px 28px -8px var(--p)}
+        .ham{display:none;font-size:24px;color:var(--t2);padding:8px;border-radius:10px;transition:.3s}
+        .ham:hover{background:rgba(255,255,255,.05)}
+        .mob-nav{display:none;position:fixed;top:72px;left:0;right:0;background:rgba(8,5,8,.95);backdrop-filter:blur(28px);border-bottom:1px solid rgba(239,68,68,.12);padding:18px 24px;flex-direction:column;gap:6px;z-index:499}
+        .mob-nav.open{display:flex}
+        .mob-a{padding:14px 18px;font-size:16px;color:var(--t2);border-radius:14px;font-weight:600}
+        .mob-a:hover{background:rgba(255,255,255,.05);color:white}
+
+
+        .hero{position:relative;z-index:2;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:120px 24px 80px;text-align:center}
+        .hero-eyebrow{display:inline-flex;align-items:center;gap:10px;padding:6px 20px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.15);border-radius:40px;font-family:var(--fm);font-size:12px;color:var(--vi);letter-spacing:.08em;margin-bottom:40px;backdrop-filter:blur(6px);animation:fadeUp .8s,borderPulse 3s infinite}
+        .eyebrow-dot{width:8px;height:8px;background:var(--gn);border-radius:50%;box-shadow:0 0 14px var(--gn);animation:pulse 2s infinite}
+        .hero-title{font-family:var(--fd);font-size:clamp(80px,14vw,160px);line-height:.9;letter-spacing:4px;margin-bottom:8px;animation:fadeUp .8s .1s both}
+        .hero-title .v{-webkit-text-stroke:2px #ef4444;color:transparent;transition:text-shadow .3s}
+        .hero-title .v:hover{text-shadow:0 0 30px rgba(239,68,68,.3)}
+        .hero-title .fill{background:linear-gradient(135deg,#fecaca,#ef4444,#f87171,#fca5a5);background-size:300% 300%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:gradientShift 6s ease infinite}
+        .hero-subtitle{font-family:var(--fd);font-size:clamp(32px,6vw,60px);letter-spacing:10px;color:var(--t3);margin-bottom:32px;animation:fadeUp .8s .2s both}
+        .hero-desc{max-width:620px;font-size:17px;color:var(--t2);line-height:1.8;margin-bottom:48px;animation:fadeUp .8s .3s both}
+        .hero-desc strong{color:var(--vi)}
+        .hero-actions{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-bottom:80px;animation:fadeUp .8s .4s both}
+        .btn-main{display:inline-flex;align-items:center;gap:10px;padding:16px 36px;background:linear-gradient(145deg,#7c3aed,#8b5cf6);border-radius:60px;color:#030303;font-weight:700;font-size:16px;box-shadow:0 14px 32px -8px rgba(124,58,237,.4);transition:var(--tb);position:relative;overflow:hidden}
+        .btn-main::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);transform:translateX(-100%);transition:transform .6s}
+        .btn-main:hover::after{transform:translateX(100%)}
+        .btn-main:hover{transform:translateY(-3px);box-shadow:0 22px 38px -6px var(--p)}
+        .btn-ghost{display:inline-flex;align-items:center;gap:10px;padding:15px 34px;background:rgba(255,255,255,.03);border:1px solid var(--bdr2);border-radius:60px;color:var(--t1);font-weight:600;font-size:16px;backdrop-filter:blur(8px);transition:var(--ts)}
+        .btn-ghost:hover{background:rgba(124,58,237,.08);border-color:rgba(124,58,237,.2);box-shadow:0 0 20px rgba(124,58,237,.1)}
+        .hero-stats{display:flex;border:1px solid var(--bdr2);border-radius:30px;background:rgba(20,10,15,.55);backdrop-filter:blur(14px);overflow:hidden;animation:fadeUp .8s .5s both}
+        .hstat{padding:20px 40px;text-align:center;border-right:1px solid var(--bdr2);transition:background .3s}
+        .hstat:last-child{border-right:none}
+        .hstat:hover{background:rgba(239,68,68,.05)}
+        .hstat-n{font-family:var(--fd);font-size:42px;letter-spacing:2px}
+        .hstat-n span{color:var(--vi)}
+        .hstat-l{font-size:12px;color:var(--t3);text-transform:uppercase;letter-spacing:.15em;margin-top:6px}
+        .scroll-hint{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--t3);font-size:11px;letter-spacing:.2em}
+        .scroll-mouse{width:24px;height:38px;border:1px solid var(--bdr2);border-radius:14px;display:flex;justify-content:center;padding-top:6px}
+        .scroll-wheel{width:4px;height:8px;background:var(--pl);border-radius:2px;animation:sb 1.8s ease-in-out infinite}
+
+
+        .sec{position:relative;z-index:2}.wrap{max-width:1280px;margin:0 auto;padding:0 32px}.pad{padding:120px 0}.pad-sm{padding:80px 0}
+        .s-eyebrow{display:inline-flex;align-items:center;gap:10px;font-family:var(--fm);font-size:12px;color:#ef4444;letter-spacing:.15em;margin-bottom:16px}
+        .s-eyebrow::before{content:"";width:28px;height:1.5px;background:currentColor}
+        .s-title{font-family:var(--fd);font-size:clamp(44px,6vw,68px);letter-spacing:1px;line-height:1.1;color:var(--t1)}
+        .hl{color:var(--vi)}
+        .hl2{background:linear-gradient(135deg,#fecaca,#f87171);-webkit-background-clip:text;background-clip:text;color:transparent}
+        .s-body{color:var(--t2);font-size:17px;line-height:1.8;max-width:640px;margin-top:20px}
+
+
+        .feat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:28px;margin-top:64px}
+        .feat-card{background:var(--card);backdrop-filter:blur(12px);border:1px solid var(--bdr2);border-radius:32px;padding:36px;transition:var(--ts);box-shadow:var(--shc);position:relative;overflow:hidden}
+        .feat-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#ef4444,#f87171,transparent);opacity:0;transition:opacity .4s}
+        .feat-card:hover::before{opacity:1}
+        .feat-card:hover{transform:translateY(-10px);border-color:var(--glow);box-shadow:var(--shh);animation:tiltGlow 2s ease-in-out infinite}
+        .feat-icon{width:60px;height:60px;border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:28px;transition:transform .3s,box-shadow .3s}
+        .feat-card:hover .feat-icon{transform:scale(1.1);box-shadow:0 0 25px rgba(239,68,68,.2)}
+        .fi-v{background:rgba(239,68,68,.12);color:var(--vi)}.fi-p{background:rgba(248,113,113,.12);color:var(--pk)}.fi-g{background:rgba(53,213,109,.12);color:var(--gn)}.fi-a{background:rgba(245,158,11,.12);color:var(--am)}
+        .feat-card h3{font-family:var(--fd);font-size:26px;letter-spacing:1px;margin-bottom:14px}
+        .feat-card p{font-size:15px;color:var(--t2);line-height:1.7}
+
+
+        .win10-banner{background:linear-gradient(135deg,rgba(239,68,68,.06),rgba(20,10,15,.6));border:1px solid var(--bdr2);border-radius:36px;padding:44px 52px;display:grid;grid-template-columns:80px 1fr;gap:36px;margin-top:64px;backdrop-filter:blur(8px);box-shadow:0 0 35px rgba(239,68,68,.08);transition:var(--ts)}
+        .win10-banner:hover{box-shadow:0 0 50px rgba(239,68,68,.15);border-color:rgba(239,68,68,.2)}
+        .win10-icon{width:80px;height:80px;background:rgba(53,213,109,.1);border:1px solid rgba(53,213,109,.25);border-radius:22px;display:flex;align-items:center;justify-content:center;font-size:34px;color:var(--gn);animation:float 4s ease-in-out infinite}
+        .win10-title{font-family:var(--fd);font-size:34px;margin-bottom:16px}
+        .win10-chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+        .win10-chip{display:inline-flex;align-items:center;gap:6px;padding:6px 18px;background:rgba(53,213,109,.08);border:1px solid rgba(53,213,109,.2);border-radius:40px;font-size:13px;color:var(--gn);transition:all .2s}
+        .win10-chip:hover{background:rgba(53,213,109,.15);transform:translateY(-2px)}
+
+
+        .av-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:48px}
+        .av-card{background:var(--card);backdrop-filter:blur(10px);border:1px solid var(--bdr2);border-radius:28px;padding:32px;transition:var(--ts)}
+        .av-card:hover{transform:translateY(-6px);border-color:var(--glow);box-shadow:var(--shh)}
+        .av-card.wide{grid-column:1/-1}
+        .av-head{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+        .av-ic{width:52px;height:52px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:22px;transition:transform .3s}
+        .av-card:hover .av-ic{transform:scale(1.1) rotate(5deg)}
+        .av-ic.warn{background:rgba(245,158,11,.12);color:var(--am)}.av-ic.ok{background:rgba(53,213,109,.12);color:var(--gn)}.av-ic.info{background:rgba(239,68,68,.12);color:var(--vi)}
+        .av-card h3{font-family:var(--fd);font-size:22px;letter-spacing:1px}
+        .av-card p{color:var(--t2);font-size:15px;line-height:1.7;margin-top:10px}
+        .aviso-card{background:linear-gradient(135deg,rgba(246,194,71,.06),rgba(236,72,153,.04));border:1px solid var(--bdr2);border-radius:30px;padding:38px;backdrop-filter:blur(10px);box-shadow:0 0 35px rgba(246,194,71,.1);margin-top:52px;transition:var(--ts)}
+        .aviso-card:hover{box-shadow:0 0 50px rgba(246,194,71,.15)}
+        .aviso-img{max-width:100%;max-height:420px;border-radius:12px;box-shadow:0 22px 45px -14px rgba(0,0,0,.8)}
+
+
+        .steps-track{display:grid;grid-template-columns:repeat(4,1fr);gap:28px;margin-top:64px}
+        .step{text-align:center}
+        .step-circle{width:84px;height:84px;margin:0 auto 22px;background:var(--card);border:1px solid var(--bdr2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;color:var(--vi);transition:var(--ts);position:relative}
+        .step:hover .step-circle{border-color:#ef4444;box-shadow:0 0 24px rgba(239,68,68,.3)}
+        .step h3{font-family:var(--fd);font-size:22px;margin-bottom:10px}
+        .step p{color:var(--t2);font-size:14px}
+
+
+        .tucli-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:52px;align-items:center;margin-top:48px}
+        .terminal{background:#080610;border:1px solid #1a1525;border-radius:22px;box-shadow:0 35px 55px -22px #00000080;overflow:hidden;transition:var(--ts)}
+        .terminal:hover{border-color:rgba(239,68,68,.15);box-shadow:0 35px 55px -22px rgba(239,68,68,.15)}
+        .term-bar{padding:16px 22px;background:#0f0a1a;border-bottom:1px solid #1a1525;display:flex;gap:10px}
+        .term-btn{width:12px;height:12px;border-radius:50%}
+        .tb-r{background:#ff5f57}.tb-y{background:#febc2e}.tb-g{background:#28c840}
+        .term-title{flex:1;text-align:center;font-family:var(--fm);font-size:12px;color:var(--t3)}
+        .term-body{padding:28px;font-family:var(--fm);font-size:14px;line-height:2}
+        .tc-p{color:#50fa7b}.tc-d{color:#8be9fd}.tc-c{color:var(--t3)}.tc-o{color:#ef4444}.tc-s{color:#f1fa8c}
+        .tc-cursor{display:inline-block;width:8px;height:16px;background:var(--vi);animation:blink 1s step-end infinite;vertical-align:middle}
+
+
+        .pb-header{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:20px;margin-bottom:32px}
+        .filter-wrap{display:flex;gap:10px;flex-wrap:wrap}
+        .f-btn{padding:10px 22px;background:transparent;border:1px solid var(--bdr2);border-radius:40px;color:var(--t2);font-size:14px;font-weight:600;transition:var(--ts)}
+        .f-btn:hover,.f-btn.active{background:rgba(239,68,68,.1);border-color:rgba(239,68,68,.25);color:var(--vi);box-shadow:0 0 15px rgba(239,68,68,.08)}
+        .pb-count{font-family:var(--fm);font-size:12px;color:var(--t3);margin-top:12px}
+        .pb-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:28px;margin-top:24px}
+        .pbc{background:var(--card);backdrop-filter:blur(10px);border:1px solid var(--bdr2);border-radius:26px;transition:var(--ts);box-shadow:var(--shc);overflow:hidden;position:relative}
+        .pbc::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#ef4444,#f87171,transparent);opacity:0;transition:opacity .4s}
+        .pbc:hover::before{opacity:1}
+        .pbc:hover{transform:translateY(-8px);border-color:var(--glow);box-shadow:var(--shh)}
+        .pbc-top{padding:26px 26px 14px;display:flex;align-items:flex-start;justify-content:space-between}
+        .pbc-icon{width:52px;height:52px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:22px;transition:transform .3s}
+        .pbc:hover .pbc-icon{transform:scale(1.1) rotate(-5deg)}
+        .icon-gaming{background:rgba(239,68,68,.12);color:var(--vi)}.icon-privacy{background:rgba(53,213,109,.12);color:var(--gn)}.icon-performance{background:rgba(248,113,113,.12);color:var(--pk)}.icon-lightweight{background:rgba(245,158,11,.12);color:var(--am)}
+        .pbc-meta{text-align:right}
+        .pbc-ver{font-family:var(--fm);font-size:11px;background:rgba(255,255,255,.04);padding:4px 10px;border-radius:8px;color:var(--t3)}
+        .pbc-body{padding:0 26px 20px}
+        .pbc-name{font-family:var(--fd);font-size:24px;letter-spacing:1px;margin-bottom:10px}
+        .pbc-desc{color:var(--t2);font-size:14px;line-height:1.7;margin-bottom:18px}
+        .pbc-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+        .tag{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:4px 12px;border-radius:30px;transition:all .2s}
+        .tag:hover{transform:translateY(-1px)}
+        .tag-gaming{background:rgba(239,68,68,.1);color:var(--vi);border:1px solid rgba(239,68,68,.2)}.tag-privacy{background:rgba(53,213,109,.1);color:var(--gn);border:1px solid rgba(53,213,109,.2)}.tag-performance{background:rgba(248,113,113,.1);color:var(--pk);border:1px solid rgba(248,113,113,.2)}.tag-lightweight{background:rgba(245,158,11,.1);color:var(--am);border:1px solid rgba(245,158,11,.2)}.tag-win10,.tag-win11{background:rgba(255,255,255,.04);color:var(--t3);border:1px solid var(--bdr)}
+        .pbc-footer{padding:18px 26px;border-top:1px solid var(--bdr);display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+        .pbc-cmd{flex:1;background:rgba(8,6,16,.8);padding:8px 14px;border-radius:10px;font-family:var(--fm);font-size:11px;color:var(--t3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .pbc-dl{background:linear-gradient(145deg,#ef4444,#dc2626);padding:10px 22px;border-radius:40px;color:#030303;font-weight:700;transition:var(--tb);box-shadow:0 8px 18px rgba(239,68,68,.25);display:inline-flex;align-items:center;gap:8px;white-space:nowrap;position:relative;overflow:hidden}
+        .pbc-dl::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.25),transparent);transform:translateX(-100%);transition:transform .5s}
+        .pbc-dl:hover::after{transform:translateX(100%)}
+        .pbc-dl:hover{transform:scale(1.03);box-shadow:0 12px 24px rgba(239,68,68,.35)}
+        .pbc-code{background:rgba(255,255,255,.04);border:1px solid var(--bdr);padding:10px 18px;border-radius:40px;color:var(--t2);font-weight:600;font-size:14px;display:inline-flex;align-items:center;gap:8px;transition:var(--ts);white-space:nowrap}
+        .pbc-code:hover{background:rgba(239,68,68,.08);border-color:rgba(239,68,68,.2);color:#fff}
+
+
+        .creator-highlight{background:linear-gradient(135deg,rgba(239,68,68,.12),rgba(248,113,113,.08));border:1px solid rgba(239,68,68,.25);border-radius:60px;padding:20px 36px;margin:36px 0 52px;display:flex;align-items:center;gap:28px;backdrop-filter:blur(14px);box-shadow:0 0 45px rgba(239,68,68,.15);transition:transform .3s}
+        .creator-highlight:hover{transform:scale(1.01)}
+        .creator-avatar{width:88px;height:88px;border-radius:50%;border:3px solid var(--vi);box-shadow:0 0 35px rgba(239,68,68,.2);transition:transform .3s,box-shadow .3s;animation:float 4s ease-in-out infinite;object-fit:cover}
+        .creator-avatar:hover{transform:scale(1.06) rotate(3deg);box-shadow:0 0 55px rgba(239,68,68,.3)}
+        .creator-info{display:flex;flex-direction:column;gap:8px}
+        .creator-label{font-family:var(--fm);font-size:13px;color:var(--gn);letter-spacing:2px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+        .creator-label i{color:var(--gn);animation:pulse 1.5s infinite}
+        .creator-name{font-family:var(--fd);font-size:36px;letter-spacing:2px;background:linear-gradient(135deg,#fff,var(--vi));-webkit-background-clip:text;background-clip:text;color:transparent}
+        .creator-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.25);border-radius:40px;padding:8px 18px;font-size:14px;font-weight:600;color:var(--vi);margin-top:6px}.creator-badge i{color:var(--gn)}
+        .creator-stats{margin-left:auto;display:flex;gap:28px}.creator-stat{text-align:center}
+        .creator-stat-value{font-family:var(--fd);font-size:28px;color:var(--t1)}.creator-stat-label{font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:1px}
+
+
+        .stats-row{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--bdr2);border-radius:32px;overflow:hidden;margin:80px 0}
+        .stat-cell{background:var(--card);backdrop-filter:blur(10px);padding:40px 28px;text-align:center;border-right:1px solid var(--bdr2);transition:background .3s}
+        .stat-cell:last-child{border-right:none}
+        .stat-cell:hover{background:rgba(239,68,68,.05)}
+        .stat-n{font-family:var(--fd);font-size:56px;color:var(--t1)}.stat-n span{color:var(--vi)}
+        .stat-l{font-size:14px;color:var(--t3);text-transform:uppercase;letter-spacing:.15em;margin-top:10px}
+
+
+        .faq-list{margin-top:48px;display:flex;flex-direction:column;gap:14px}
+        .faq-item{background:var(--card);border:1px solid var(--bdr2);border-radius:22px;transition:var(--ts);backdrop-filter:blur(10px);position:relative}
+        .faq-item:hover{border-color:rgba(239,68,68,.15)}
+        .faq-item.open{border-color:rgba(239,68,68,.25);box-shadow:0 0 20px rgba(239,68,68,.06)}
+        .faq-item::after{content:"";position:absolute;bottom:0;left:24px;right:24px;height:2px;background:linear-gradient(90deg,transparent,#ef4444,transparent);opacity:0;transition:opacity .3s}
+        .faq-item.open::after{opacity:1}
+        .faq-q{width:100%;padding:24px 30px;display:flex;justify-content:space-between;align-items:center;font-family:var(--fd);font-size:22px;letter-spacing:.5px;color:var(--t1);text-align:left;transition:color .2s}
+        .faq-q:hover{color:var(--vi)}
+        .faq-q i{color:var(--t3);transition:transform .3s,color .3s}
+        .faq-item.open .faq-q i{transform:rotate(180deg);color:#ef4444}
+        .faq-answer{max-height:0;overflow:hidden;transition:max-height .45s cubic-bezier(.4,0,.2,1)}
+        .faq-item.open .faq-answer{max-height:320px}
+        .faq-body{padding:0 30px 26px;color:var(--t2);font-size:16px;line-height:1.8}
+        .faq-body code{background:rgba(239,68,68,.1);padding:2px 8px;border-radius:6px;font-family:var(--fm);font-size:13px;color:var(--vi)}
+
+
+        .footer-sec{border-top:none;background:#080508;position:relative;z-index:2}
+        .footer-sec::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#ef4444,#f87171,#fca5a5,transparent)}
+        .footer-inner{max-width:1280px;margin:0 auto;padding:68px 32px;display:grid;grid-template-columns:1.8fr 1fr 1fr;gap:52px}
+        .footer-logo{display:flex;align-items:center;gap:10px;font-family:var(--fd);font-size:26px;margin-bottom:18px}
+        .footer-logo-mark{width:38px;height:38px;background:linear-gradient(145deg,#ef4444,#f87171);border-radius:12px;display:flex;align-items:center;justify-content:center}
+        .footer-brand p{color:var(--t3);font-size:15px;max-width:320px}
+        .footer-col h4{font-family:var(--fd);font-size:18px;letter-spacing:2px;color:var(--t3);margin-bottom:22px}
+        .footer-links{display:flex;flex-direction:column;gap:14px}
+        .footer-link{color:var(--t2);font-size:15px;display:flex;align-items:center;gap:8px;transition:color .2s}.footer-link:hover{color:var(--vi)}
+        .footer-bottom{max-width:1280px;margin:0 auto;padding:26px 32px;border-top:1px solid var(--bdr2);display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;color:var(--t3);font-size:14px}
+
+        .nav-progress{position:absolute;bottom:0;left:0;height:2px;background:linear-gradient(90deg,#ef4444,#f87171,#fca5a5);width:0%;transition:width .1s linear;z-index:1}
+        .parallax-layer{pointer-events:none;position:absolute;inset:0}
+        .parallax-orb{position:absolute;border-radius:50%;filter:blur(40px)}
+
+
+        @media(max-width:900px){.nav-links{display:none}.ham{display:block}.feat-grid{grid-template-columns:1fr 1fr}.av-grid{grid-template-columns:1fr}.steps-track{grid-template-columns:1fr 1fr}.tucli-grid{grid-template-columns:1fr}.win10-banner{grid-template-columns:1fr}.footer-inner{grid-template-columns:1fr}.stats-row{grid-template-columns:1fr 1fr}.pb-grid{grid-template-columns:1fr}.parallax-layer{display:none}.hero > div[style*="position:absolute"][style*="animation:floatRotate"]{display:none}}
+        @media(max-width:600px){.hero-stats{flex-direction:column;border-radius:22px}.hstat{border-right:none;border-bottom:1px solid var(--bdr2);width:100%}.hstat:last-child{border-bottom:none}.feat-grid,.steps-track{grid-template-columns:1fr}.pb-grid{grid-template-columns:1fr}.stats-row{grid-template-columns:1fr}.stat-cell{border-right:none;border-bottom:1px solid var(--bdr2)}.stat-cell:last-child{border-bottom:none}.creator-highlight{flex-direction:column;text-align:center;padding:28px}.creator-stats{margin-left:0;justify-content:center}}
+    </style>
+</head>
+<body>
+    <canvas id="bg-canvas"></canvas>
+    <div class="scan"></div>
+    <div class="noise"></div>
+
+    <div id="loader">
+        <div class="loader-logo">EXODUSTWEAKS</div>
+        <div class="boot-lines">
+            <div class="boot-line"><span class="b-ok">[  OK  ]</span> Iniciando kernel de otimização...</div>
+            <div class="boot-line"><span class="b-ok">[  OK  ]</span> Carregando playbooks do repositório...</div>
+            <div class="boot-line"><span class="b-info">[ INFO ]</span> Detectado suporte Win10 + Win11</div>
+            <div class="boot-line"><span class="b-warn">[ WARN ]</span> Antivírus pode sinalizar (falso positivo)</div>
+            <div class="boot-line"><span class="b-ok">[  OK  ]</span> Sistema pronto.</div>
+        </div>
+        <div class="boot-bar"><div class="boot-progress"></div></div>
+    </div>
+
+    <nav id="nav">
+        <div class="nav-in">
+            <a href="#" class="nav-logo"><div class="nav-logo-mark"><i class="fas fa-bolt"></i></div>EXODUSTWEAKS</a>
+            <div class="nav-links">
+                <a href="#sobre" class="nav-a">Playbooks</a>
+                <a href="#antivirus" class="nav-a">Antivírus</a>
+                <a href="#como-usar" class="nav-a">Como Usar</a>
+                <a href="#amebeta" class="nav-a">AME Beta</a>
+                <a href="#downloads" class="nav-a">Downloads</a>
+                <a href="#faq" class="nav-a">FAQ</a>
+                <a href="https://github.com/Exodustweaks/Exodus-apbx" target="_blank" class="nav-cta"><i class="fab fa-github"></i> GitHub</a>
+            </div>
+            <button class="ham" id="ham" onclick="toggleMob()"><i class="fas fa-bars"></i></button>
+        </div>
+        <div class="nav-progress" id="nav-progress"></div>
+    </nav>
+    <div class="mob-nav" id="mob-nav">
+        <a href="#sobre" class="mob-a">Playbooks</a><a href="#antivirus" class="mob-a">Antivírus</a><a href="#como-usar" class="mob-a">Como Usar</a><a href="#amebeta" class="mob-a">AME Beta</a><a href="#downloads" class="mob-a">Downloads</a><a href="#faq" class="mob-a">FAQ</a>
+        <a href="https://github.com/Exodustweaks/Exodus-apbx" target="_blank" class="mob-a"><i class="fab fa-github"></i> GitHub</a>
+    </div>
+
+    <section class="hero sec">
+        <div class="parallax-layer" data-speed="0.3">
+            <div class="parallax-orb" style="top:10%;left:5%;width:200px;height:200px;background:radial-gradient(circle,rgba(239,68,68,.06),transparent 70%)"></div>
+            <div class="parallax-orb" style="top:40%;right:8%;width:300px;height:300px;background:radial-gradient(circle,rgba(248,113,113,.04),transparent 70%);filter:blur(50px)"></div>
+        </div>
+        <div style="position:absolute;top:18%;left:12%;width:80px;height:80px;border:1px solid rgba(239,68,68,.15);border-radius:20px;background:rgba(239,68,68,.04);animation:floatRotate 7s ease-in-out infinite;pointer-events:none;z-index:1"></div>
+        <div style="position:absolute;top:25%;right:10%;width:60px;height:60px;border:1px solid rgba(248,113,113,.12);border-radius:50%;background:rgba(248,113,113,.03);animation:floatRotate 5s ease-in-out infinite .5s;pointer-events:none;z-index:1"></div>
+        <div style="position:absolute;bottom:20%;left:8%;width:50px;height:50px;border:1px solid rgba(252,165,165,.1);border-radius:14px;background:rgba(252,165,165,.03);animation:floatRotate 6s ease-in-out infinite 1s;pointer-events:none;z-index:1"></div>
+        <div class="hero-eyebrow"><span class="eyebrow-dot"></span> Modificado por kelvenapk · Windows 10 & 11 · 100% Gratuito</div>
+        <h1 class="hero-title"><span class="fill">EXODUS</span> <span class="v">TWEAKS</span></h1>
+        <p class="hero-subtitle">PLAYBOOKS</p>
+        <p class="hero-desc">Coleção de playbooks da comunidade AME — <strong>AtlasOS, ReviOS, RapidOS e mais</strong> — modificados com suporte nativo ao <strong>Windows 10</strong> por kelvenapk. Sem custo. Sem complicação.</p>
+        <div class="hero-actions">
+            <a href="#downloads" class="btn-main"><i class="fas fa-download"></i> Ver Playbooks</a>
+            <a href="https://github.com/Exodustweaks/Exodus-apbx" target="_blank" class="btn-ghost"><i class="fab fa-github"></i> Código Fonte</a>
+        </div>
+        <div class="hero-stats">
+            <div class="hstat"><div class="hstat-n" data-count="13">13</div><div class="hstat-l">Playbooks</div></div>
+            <div class="hstat"><div class="hstat-n">Win <span>10</span></div><div class="hstat-l">Suporte</div></div>
+            <div class="hstat"><div class="hstat-n"><span>100</span>%</div><div class="hstat-l">Gratuito</div></div>
+            <div class="hstat"><div class="hstat-n"><span>AME</span></div><div class="hstat-l">Wizard</div></div>
+        </div>
+        <div class="scroll-hint"><div class="scroll-mouse"><div class="scroll-wheel"></div></div><span>SCROLL</span></div>
+    </section>
+
+    <section id="sobre" class="sec pad"><div class="wrap">
+        <div data-reveal><div class="s-eyebrow">PLAYBOOKS</div><h2 class="s-title">O que são <span class="hl">Playbooks</span>?</h2><p class="s-body">Scripts automatizados que modificam o Windows profundamente — removem bloatware, desativam telemetria, ajustam latência e maximizam performance.</p></div>
+        <div class="feat-grid">
+            <div class="feat-card" data-reveal><div class="feat-icon fi-v"><i class="fas fa-gamepad"></i></div><h3>Gaming</h3><p>Timers de alta resolução, DPC otimizado, scheduler ajustado e GPU em modo máxima performance.</p></div>
+            <div class="feat-card" data-reveal><div class="feat-icon fi-g"><i class="fas fa-user-shield"></i></div><h3>Privacy</h3><p>Remoção completa de telemetria, bloqueio de rastreamento e reforço da privacidade digital.</p></div>
+            <div class="feat-card" data-reveal><div class="feat-icon fi-p"><i class="fas fa-tachometer-alt"></i></div><h3>Performance</h3><p>Processos eliminados, boot mais rápido e sistema geral muito mais ágil e responsivo.</p></div>
+            <div class="feat-card" data-reveal><div class="feat-icon fi-a"><i class="fas fa-feather"></i></div><h3>Leveza</h3><p>Remoção de apps pré-instalados e bloatware. Ideal para PCs mais antigos.</p></div>
+        </div>
+        <div class="win10-banner" data-reveal>
+            <div class="win10-icon"><i class="fas fa-code-branch"></i></div>
+            <div><div class="win10-title">Modificação de <span style="color:var(--gn)">Suporte ao Windows 10</span></div>
+            <div style="color:var(--t2);font-size:16px;line-height:1.7"><p>Os playbooks são os mesmos da comunidade AME — <strong>AtlasOS, ReviOS, RapidOS, Vain, NovaOS e outros</strong>. A única modificação por kelvenapk foi <strong>adicionar compatibilidade com Windows 10</strong>.</p><p style="margin-top:12px">Scripts internos <strong>idênticos aos originais</strong> — nenhum código malicioso adicionado.</p></div>
+            <div class="win10-chips"><span class="win10-chip"><i class="fas fa-check"></i> Win 10 Build 19041+</span><span class="win10-chip"><i class="fas fa-check"></i> Win 10 21H2 / 22H2</span><span class="win10-chip"><i class="fas fa-check"></i> Win 11 suportado</span><span class="win10-chip"><i class="fas fa-check"></i> Home & Pro</span></div></div>
+        </div>
+    </div></section>
+
+    <section id="antivirus" class="sec pad" style="border-top:1px solid var(--bdr2)"><div class="wrap">
+        <div data-reveal><div class="s-eyebrow">SEGURANÇA</div><h2 class="s-title">Por que o <span class="hl2">Antivírus</span> detecta?</h2><p class="s-body">Entenda por que é um falso positivo.</p></div>
+        <div class="av-grid">
+            <div class="av-card wide" data-reveal><div class="av-head"><div class="av-ic warn"><i class="fas fa-exclamation-triangle"></i></div><h3>Falso Positivo — Totalmente Esperado</h3></div><p>Arquivos <code style="background:rgba(255,255,255,.04);padding:2px 6px;border-radius:6px">.apbx</code> contêm scripts que modificam configurações profundas do Windows — qualquer ferramenta que faça isso é sinalizada automaticamente.</p><p style="margin-top:12px">Isso ocorre com <strong>AtlasOS oficial</strong>, <strong>ReviOS oficial</strong>, <strong>RapidOS</strong> e todos os projetos AME.</p></div>
+            <div class="av-card" data-reveal><div class="av-head"><div class="av-ic ok"><i class="fas fa-check-circle"></i></div><h3>Por que é seguro?</h3></div><div style="display:flex;flex-direction:column;gap:8px;margin-top:16px"><div><i class="fas fa-circle" style="font-size:8px;color:var(--gn);margin-right:8px"></i> Código 100% open source</div><div><i class="fas fa-circle" style="font-size:8px;color:var(--gn);margin-right:8px"></i> Sem executáveis ocultos</div><div><i class="fas fa-circle" style="font-size:8px;color:var(--gn);margin-right:8px"></i> AME verifica integridade</div><div><i class="fas fa-circle" style="font-size:8px;color:var(--gn);margin-right:8px"></i> Mesmo padrão de AtlasOS/ReviOS</div></div></div>
+            <div class="av-card" data-reveal><div class="av-head"><div class="av-ic info"><i class="fas fa-info-circle"></i></div><h3>O que fazer?</h3></div><div style="display:flex;flex-direction:column;gap:8px;margin-top:16px"><div><i class="fas fa-circle" style="font-size:8px;color:#ef4444;margin-right:8px"></i> Desative o Defender antes</div><div><i class="fas fa-circle" style="font-size:8px;color:#ef4444;margin-right:8px"></i> Execute como Administrador</div><div><i class="fas fa-circle" style="font-size:8px;color:#ef4444;margin-right:8px"></i> Reinicie após aplicar</div><div><i class="fas fa-circle" style="font-size:8px;color:#ef4444;margin-right:8px"></i> Crie ponto de restauração</div></div></div>
+        </div>
+        <div class="aviso-card" data-reveal>
+            <div style="display:flex;align-items:center;gap:18px;margin-bottom:22px"><div style="width:48px;height:48px;border-radius:14px;background:rgba(246,194,71,.1);display:flex;align-items:center;justify-content:center;font-size:24px;color:var(--am);border:1px solid rgba(246,194,71,.15)"><i class="fas fa-exclamation-triangle"></i></div><h3 style="font-family:var(--fd);font-size:30px;letter-spacing:1px">Exemplo real do aviso no AME Beta</h3></div>
+            <p style="color:var(--t2);font-size:16px;line-height:1.8;margin-bottom:26px">Ao carregar qualquer playbook .apbx no AME Wizard, o Defender exibirá um falso positivo. Normal com todos os playbooks AME.</p>
+            <div style="display:flex;justify-content:center;padding:18px;background:rgba(0,0,0,.3);border-radius:20px;border:1px solid rgba(255,255,255,.04)"><img class="aviso-img" src="https://github.com/Exodustweaks/Exodus-apbx/blob/main/aviso.png?raw=true" alt="Aviso" loading="lazy"></div>
+        </div>
+    </div></section>
+
+    <section id="como-usar" class="sec pad" style="border-top:1px solid var(--bdr2)"><div class="wrap">
+        <div data-reveal><div class="s-eyebrow">GUIA</div><h2 class="s-title">Como <span class="hl">Usar</span>?</h2><p class="s-body">Quatro passos simples para transformar seu Windows.</p></div>
+        <div class="steps-track">
+            <div class="step" data-reveal><div class="step-circle"><span style="position:absolute;top:-5px;right:-5px;background:var(--p);width:22px;height:22px;border-radius:50%;font-size:12px;display:flex;align-items:center;justify-content:center;color:#030303;font-weight:700">1</span><i class="fas fa-download"></i></div><h3>AME Beta</h3><p>Instale o AME Wizard Beta via winget ou GitHub.</p></div>
+            <div class="step" data-reveal><div class="step-circle"><span style="position:absolute;top:-5px;right:-5px;background:var(--p);width:22px;height:22px;border-radius:50%;font-size:12px;display:flex;align-items:center;justify-content:center;color:#030303;font-weight:700">2</span><i class="fas fa-file-archive"></i></div><h3>PLAYBOOK</h3><p>Escolha e baixe um dos playbooks disponíveis.</p></div>
+            <div class="step" data-reveal><div class="step-circle"><span style="position:absolute;top:-5px;right:-5px;background:var(--p);width:22px;height:22px;border-radius:50%;font-size:12px;display:flex;align-items:center;justify-content:center;color:#030303;font-weight:700">3</span><i class="fas fa-shield-virus"></i></div><h3>ANTIVÍRUS</h3><p>Desative o Windows Defender temporariamente.</p></div>
+            <div class="step" data-reveal><div class="step-circle"><span style="position:absolute;top:-5px;right:-5px;background:var(--p);width:22px;height:22px;border-radius:50%;font-size:12px;display:flex;align-items:center;justify-content:center;color:#030303;font-weight:700">4</span><i class="fas fa-rocket"></i></div><h3>APLICAR</h3><p>Execute o AME Beta e carregue o .apbx.</p></div>
+        </div>
+    </div></section>
+
+    <section id="amebeta" class="sec pad" style="background:linear-gradient(180deg,transparent,rgba(239,68,68,.02),transparent);border-top:1px solid var(--bdr2)"><div class="wrap">
+        <div class="tucli-grid">
+            <div data-reveal="left"><div class="s-eyebrow">REQUISITO</div><h3 style="font-family:var(--fd);font-size:42px;letter-spacing:2px">AME <span style="color:var(--vi)">Beta</span></h3><p style="color:var(--t2);margin:22px 0;font-size:17px">O AME Wizard Beta é a engine open source que interpreta e executa os playbooks .apbx no seu Windows.</p>
+            <div style="display:flex;flex-direction:column;gap:12px;margin:26px 0"><div><i class="fas fa-check-circle" style="color:var(--gn);margin-right:10px"></i> Aplica qualquer playbook .apbx</div><div><i class="fas fa-check-circle" style="color:var(--gn);margin-right:10px"></i> Compatível com Win 10 e 11</div><div><i class="fas fa-check-circle" style="color:var(--gn);margin-right:10px"></i> Open Source — código auditável</div></div>
+            <div style="display:flex;gap:16px;flex-wrap:wrap"><a href="https://github.com/Ameliorated-LLC/trusted-uninstaller-cli/releases/tag/0.8.4" target="_blank" class="btn-main"><i class="fas fa-download"></i> Baixar AME Beta</a><a href="https://github.com/Ameliorated-LLC/trusted-uninstaller-cli" target="_blank" class="btn-ghost"><i class="fab fa-github"></i> GitHub</a></div></div>
+            <div class="terminal" data-reveal="right"><div class="term-bar"><div class="term-btn tb-r"></div><div class="term-btn tb-y"></div><div class="term-btn tb-g"></div><div class="term-title">Terminal — PowerShell (Admin)</div></div>
+            <div class="term-body"><div><span class="tc-c"># Instalar AME Beta via winget</span></div><div><span class="tc-p">PS</span><span class="tc-d"> C:\&gt;</span> winget install <span class="tc-s">AmelioratedLLC.TrustedUninstallerCLI</span></div><div><span class="tc-o">✔ Instalação concluída</span></div><div style="margin-top:16px"><span class="tc-c"># Ou execute diretamente</span></div><div><span class="tc-p">PS</span><span class="tc-d"> C:\Downloads&gt;</span> .\AME-Wizard-Beta.exe</div><div><span class="tc-o">  Carregando playbooks...</span></div><div><span class="tc-o">✔ Sistema otimizado!</span></div><div><span class="tc-p">PS</span><span class="tc-d"> C:\Downloads&gt;</span> <span class="tc-cursor"></span></div></div></div>
+        </div>
+    </div></section>
+
+    <section id="downloads" class="sec pad" style="border-top:1px solid var(--bdr2)"><div class="wrap">
+        <div class="pb-header"><div data-reveal><div class="s-eyebrow">DOWNLOADS</div><h2 class="s-title">Playbooks <span class="hl">Disponíveis</span></h2><p class="s-body" style="margin-top:8px">13 playbooks com suporte a Windows 10. Download direto do GitHub.</p></div>
+        <div><div class="filter-wrap" id="filters"><button class="f-btn active" data-f="all">Todos</button><button class="f-btn" data-f="gaming">🎮 Gaming</button><button class="f-btn" data-f="privacy">🔒 Privacy</button><button class="f-btn" data-f="performance">⚡ Performance</button><button class="f-btn" data-f="lightweight">🍃 Leve</button></div><div class="pb-count" id="pb-count">Mostrando 13 playbooks</div></div></div>
+        <div class="creator-highlight" data-reveal><img class="creator-avatar" id="creator-avatar" src="https://avatars.githubusercontent.com/u/113907052?v=4" alt="kelvenapk"><div class="creator-info"><span class="creator-label"><i class="fas fa-code-branch"></i> MODIFICADO POR</span><span class="creator-name" id="creator-name">kelvenapk</span><span class="creator-badge"><i class="fas fa-check-circle"></i> Todos os 13 playbooks adaptados para Windows 10</span></div><div class="creator-stats"><div class="creator-stat"><div class="creator-stat-value">13</div><div class="creator-stat-label">Playbooks</div></div><div class="creator-stat"><div class="creator-stat-value">Win10</div><div class="creator-stat-label">Suporte</div></div></div></div>
+        <div style="margin-bottom:32px" data-reveal>
+            <div style="background:linear-gradient(135deg,rgba(239,68,68,.08),rgba(248,113,113,.05));border:2px solid rgba(239,68,68,.3);border-radius:30px;padding:40px;display:grid;grid-template-columns:1fr auto;gap:32px;align-items:center;position:relative;overflow:hidden">
+                <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#ef4444,#f87171,transparent)"></div>
+                <div>
+                    <div style="display:inline-flex;align-items:center;gap:8px;padding:4px 14px;background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.25);border-radius:999px;font-family:var(--fm);font-size:10px;color:#ef4444;letter-spacing:2px;text-transform:uppercase;margin-bottom:16px"><i class="fas fa-star" style="font-size:8px"></i> DESTAQUE</div>
+                    <h3 style="font-family:var(--fd);font-size:36px;letter-spacing:1px;margin-bottom:10px">FSOS-XR6.3</h3>
+                    <p style="color:var(--t2);font-size:16px;line-height:1.7;margin-bottom:20px">O playbook mais completo da comunidade AME. Otimizações agressivas para máxima performance — ideal para gamers competitivos e PCs de alta performance. Win10 19044/19045 + Win11.</p>
+                    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px">
+                        <span class="tag tag-performance">⚡ Performance</span>
+                        <span class="tag tag-gaming">🎮 Gaming</span>
+                        <span class="tag tag-win10">Win 10</span>
+                        <span class="tag tag-win11">Win 11</span>
+                    </div>
+                    <div style="display:flex;gap:12px;flex-wrap:wrap">
+                        <a href="https://raw.githubusercontent.com/Exodustweaks/Exodus-apbx/main/playbooks/FSOS-XR6.3.apbx" target="_blank" class="btn-main" onclick="return confirm('FSOS-XR6.3 — Modificado por kelvenapk. Continuar?')"><i class="fas fa-download"></i> Baixar FSOS-XR6.3</a>
+                        <a href="https://github.com/Exodustweaks/Exodus-apbx/tree/main/codigo%20dos%20playbooks/FSOS-XR6.3" target="_blank" class="btn-ghost"><i class="fas fa-code"></i> Ver Código</a>
+                    </div>
+                </div>
+                <div style="text-align:center;padding:20px">
+                    <div style="width:100px;height:100px;border-radius:24px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.15);display:flex;align-items:center;justify-content:center;font-size:42px;color:var(--vi)"><i class="fas fa-tachometer-alt"></i></div>
+                    <div style="font-family:var(--fm);font-size:11px;color:var(--t3);margin-top:12px;letter-spacing:1px;text-transform:uppercase">v6.3</div>
+                </div>
+            </div>
+        </div>
+        <div class="pb-grid" id="pb-grid"></div>
+    </div></section>
+
+    <section class="sec"><div class="wrap"><div class="stats-row" data-reveal="scale">
+        <div class="stat-cell"><div class="stat-n" data-count="13">13</div><div class="stat-l">Playbooks</div></div>
+        <div class="stat-cell"><div class="stat-n">Win <span>10</span></div><div class="stat-l">Suporte</div></div>
+        <div class="stat-cell"><div class="stat-n"><span>4</span></div><div class="stat-l">Categorias</div></div>
+        <div class="stat-cell"><div class="stat-n"><span>100</span>%</div><div class="stat-l">Gratuito</div></div>
+    </div></div></section>
+
+    <section id="faq" class="sec pad" style="border-top:1px solid var(--bdr2)"><div class="wrap">
+        <div data-reveal><div class="s-eyebrow">FAQ</div><h2 class="s-title">Perguntas <span class="hl">Frequentes</span></h2></div>
+        <div class="faq-list" id="faq-list"></div>
+    </div></section>
+
+    <footer class="footer-sec"><div class="footer-inner">
+        <div class="footer-brand"><div class="footer-logo"><div class="footer-logo-mark"><i class="fas fa-bolt" style="font-size:14px;color:#030303"></i></div>EXODUSTWEAKS</div><p>Playbooks da comunidade AME modificados por kelvenapk com suporte ao Windows 10.</p></div>
+        <div class="footer-col"><h4>LINKS</h4><div class="footer-links"><a href="https://github.com/Exodustweaks/Exodus-apbx" target="_blank" class="footer-link"><i class="fab fa-github"></i> GitHub</a><a href="https://github.com/Exodustweaks/Exodus-apbx/issues" target="_blank" class="footer-link"><i class="fas fa-bug"></i> Reportar Bug</a><a href="https://github.com/Ameliorated-LLC/trusted-uninstaller-cli" target="_blank" class="footer-link"><i class="fas fa-terminal"></i> AME Beta</a></div></div>
+        <div class="footer-col"><h4>CATEGORIAS</h4><div class="footer-links"><a href="#downloads" class="footer-link">🎮 Gaming</a><a href="#downloads" class="footer-link">🔒 Privacy</a><a href="#downloads" class="footer-link">⚡ Performance</a><a href="#downloads" class="footer-link">🍃 Leve</a></div></div>
+    </div><div class="footer-bottom"><span>© 2026 ExodusTweaks · kelvenapk</span><span style="font-family:var(--fm)">Win 10 + 11 · AME Compatible</span></div></footer>
+
+    <script type="module">
+        import * as THREE from 'three';
+        const canvas = document.getElementById('bg-canvas');
+        const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 30;
+        const pGeo = new THREE.BufferGeometry();
+        const cnt = 1800;
+        const pos = new Float32Array(cnt * 3);
+        const col = new Float32Array(cnt * 3);
+        const c1 = new THREE.Color('#f87171');
+        const c2 = new THREE.Color('#ef4444');
+        const c3 = new THREE.Color('#35d56d');
+        for (let i = 0; i < cnt * 3; i += 3) {
+            const r = 22 + Math.random() * 32;
+            const t = Math.random() * Math.PI * 2;
+            const p = Math.acos((Math.random() * 2) - 1);
+            pos[i] = Math.sin(p) * Math.cos(t) * r;
+            pos[i+1] = Math.sin(p) * Math.sin(t) * r;
+            pos[i+2] = Math.cos(p) * r;
+            const m = c1.clone().lerp(c2, Math.random());
+            if (Math.random() > 0.6) m.lerp(c3, Math.random());
+            col[i] = m.r; col[i+1] = m.g; col[i+2] = m.b;
+        }
+        pGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+        pGeo.setAttribute('color', new THREE.BufferAttribute(col, 3));
+        const pMesh = new THREE.Points(pGeo, new THREE.PointsMaterial({ size: 0.16, vertexColors: true, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false }));
+        scene.add(pMesh);
+        const sGeo = new THREE.BufferGeometry();
+        const sPos = new Float32Array(1000 * 3);
+        for (let i = 0; i < 1000 * 3; i += 3) { sPos[i] = (Math.random()-.5)*220; sPos[i+1] = (Math.random()-.5)*220; sPos[i+2] = (Math.random()-.5)*220; }
+        sGeo.setAttribute('position', new THREE.BufferAttribute(sPos, 3));
+        scene.add(new THREE.Points(sGeo, new THREE.PointsMaterial({ color: 0xffffff, size: 0.1, transparent: true })));
+        let mx = 0, my = 0;
+        window.addEventListener('mousemove', e => { mx = (e.clientX/window.innerWidth)*2-1; my = -(e.clientY/window.innerHeight)*2+1; });
+        (function anim() {
+            requestAnimationFrame(anim);
+            pMesh.rotation.y += .0009; pMesh.rotation.x += .0004;
+            camera.position.x += (mx*6 - camera.position.x) * .02;
+            camera.position.y += (my*4 - camera.position.y) * .02;
+            camera.lookAt(scene.position);
+            renderer.render(scene, camera);
+        })();
+        window.addEventListener('resize', () => { camera.aspect = window.innerWidth/window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth, window.innerHeight); });
+
+        const PLAYBOOKS = [
+            { name:'AtlasOS', file:'AtlasOS%20v0.5.1%20RC2.apbx', code:'AtlasOS%20v0.5.1%20RC2', ver:'v0.5.1 RC2', cat:'performance', tags:['performance','gaming'], desc:'O playbook mais popular da comunidade AME.' },
+            { name:'AtmosphereOS', file:'AtmosphereOS.apbx', code:'AtmosphereOS', ver:'latest', cat:'gaming', tags:['gaming'], desc:'Gaming de alta performance. Scheduler e DPC.' },
+            { name:'AtomPlayBook', file:'AtomPlayBook.v0.0.5.apbx', code:'AtomPlayBook.v0.0.5', ver:'v0.0.5', cat:'lightweight', tags:['lightweight'], desc:'Minimalista e ultra-leve.' },
+            { name:'Eternity OS', file:'Eternity.v1.4.apbx', code:'Eternity.v1.4', ver:'v1.4', cat:'gaming', tags:['gaming','performance'], desc:'Gaming extremo com tweaks avançados.' },
+            { name:'NovaOS', file:'NovaOS-V4.apbx', code:'NovaOS-V4', ver:'V4', cat:'gaming', tags:['gaming'], desc:'Quarta geração. Interrupções e GPU.' },
+            { name:'PeakOS', file:'PeakOS%20V1.0.2%20.apbx', code:'PeakOS%20V1.0.2', ver:'v1.0.2', cat:'performance', tags:['performance'], desc:'Pico de desempenho. Serviços removidos.' },
+            { name:'RapidOS', file:'RapidOS.apbx', code:'RapidOS', ver:'latest', cat:'privacy', tags:['privacy','performance'], desc:'Privacidade e customização via YAML.' },
+            { name:'RaxOS', file:'RaxOS.apbx', code:'RaxOS', ver:'latest', cat:'gaming', tags:['gaming'], desc:'Competitivo: input lag e framerate.' },
+            { name:'ReviOS', file:'Revi-PB-26.04.apbx', code:'Revi-PB-26.04', ver:'26.04', cat:'privacy', tags:['privacy','performance'], desc:'Equilíbrio privacidade e performance.' },
+            { name:'SOS', file:'SOS%200.2.3.apbx', code:'SOS%200.2.3', ver:'0.2.3', cat:'lightweight', tags:['lightweight'], desc:'Enxuto ao extremo. Boot rápido.' },
+            { name:'SapphireOS', file:'SapphireOS.apbx', code:'SapphireOS', ver:'latest', cat:'performance', tags:['performance','gaming'], desc:'Refinado e estável.' },
+            { name:'XOS', file:'XOS%20v0.445.apbx', code:'XOS%20v0.445', ver:'v0.445', cat:'gaming', tags:['gaming'], desc:'Estabilidade de framerate.' },
+            { name:'FSOS-XR6.3', file:'FSOS-XR6.3.apbx', code:'FSOS-XR6.3', ver:'6.3', cat:'performance', tags:['performance','gaming'], desc:'Máxima performance.' }
+        ];
+        const B_RAW = 'https://raw.githubusercontent.com/Exodustweaks/Exodus-apbx/main/playbooks/';
+        const B_CODE = 'https://github.com/Exodustweaks/Exodus-apbx/tree/main/codigo%20dos%20playbooks/';
+        const ICONS = { gaming:'gamepad', privacy:'shield-halved', performance:'tachometer-alt', lightweight:'feather' };
+        const TAGS = { gaming:'Gaming', privacy:'Privacy', performance:'Performance', lightweight:'Leve' };
+        function renderPBs(f='all') {
+            const g = document.getElementById('pb-grid');
+            const c = document.getElementById('pb-count');
+            const l = f === 'all' ? PLAYBOOKS : PLAYBOOKS.filter(p => p.cat === f);
+            c.textContent = `Mostrando ${l.length} playbook${l.length !== 1 ? 's' : ''}`;
+            g.innerHTML = '';
+            l.forEach((p, i) => {
+                const cu = p.code ? B_CODE + p.code : '';
+                const d = document.createElement('div');
+                d.className = 'pbc';
+                d.style.animationDelay = `${i * 0.06}s`;
+                d.innerHTML = `<div class="pbc-top"><div class="pbc-icon icon-${p.cat}"><i class="fas fa-${ICONS[p.cat]}"></i></div><div class="pbc-meta"><div class="pbc-ver">${p.ver}</div></div></div><div class="pbc-body"><div class="pbc-name">${p.name}</div><div class="pbc-desc">${p.desc}</div><div class="pbc-tags">${p.tags.map(t => `<span class="tag tag-${t}">${TAGS[t]}</span>`).join('')}<span class="tag tag-win10">Win 10</span><span class="tag tag-win11">Win 11</span></div></div><div class="pbc-footer"><div class="pbc-cmd">AME Beta → ${p.name}</div><a href="${B_RAW + p.file}" target="_blank" class="pbc-dl" onclick="return confirm('Modificado por kelvenapk. Continuar?')"><i class="fas fa-download"></i> Baixar</a>${cu ? `<a href="${cu}" target="_blank" class="pbc-code"><i class="fas fa-code"></i> Código</a>` : ''}</div>`;
+                g.appendChild(d);
+                d.addEventListener('mousemove', e => {
+                    const r = d.getBoundingClientRect();
+                    const x = (e.clientX - r.left) / r.width - .5;
+                    const y = (e.clientY - r.top) / r.height - .5;
+                    d.style.transform = `translateY(-8px) perspective(800px) rotateY(${x * 6}deg) rotateX(${-y * 5}deg)`;
+                    d.style.transition = 'transform 0.1s ease';
+                });
+                d.addEventListener('mouseleave', () => { d.style.transform = 'translateY(0)'; d.style.transition = 'var(--ts)'; });
+            });
+        }
+        const FAQS = [
+            { q:'O que foi modificado?', a:'Apenas <strong>suporte ao Windows 10</strong>. Scripts idênticos aos originais.' },
+            { q:'Por que o antivírus detecta?', a:'<strong>Falso positivo</strong>. .apbx modifica o Windows profundamente.' },
+            { q:'Como instalo o AME Beta?', a:'<code>winget install AmelioratedLLC.TrustedUninstallerCLI</code> ou baixe do GitHub.' },
+            { q:'Desativo o Defender?', a:'Sim, temporariamente. Falso positivo.' },
+            { q:'Posso reverter?', a:'Crie ponto de restauração antes.' },
+            { q:'Qual escolher?', a:'Gaming: Vain, AtmosphereOS. Privacy: RapidOS, ReviOS.' }
+        ];
+        function renderFAQ(){const l=document.getElementById('faq-list');FAQS.forEach(f=>{const e=document.createElement('div');e.className='faq-item';e.innerHTML=`<button class="faq-q" onclick="this.parentElement.classList.toggle('open')">${f.q}<i class="fas fa-chevron-down"></i></button><div class="faq-answer"><div class="faq-body">${f.a}</div></div>`;l.appendChild(e)})}
+        document.getElementById('filters').addEventListener('click',e=>{const b=e.target.closest('.f-btn');if(!b)return;document.querySelectorAll('.f-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active');renderPBs(b.dataset.f)});
+        const nav = document.getElementById('nav');
+        window.addEventListener('scroll', () => nav.classList.toggle('solid', scrollY > 50));
+        window.toggleMob = () => { const m = document.getElementById('mob-nav'), h = document.getElementById('ham'); m.classList.toggle('open'); h.innerHTML = m.classList.contains('open') ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>'; };
+        const io = new IntersectionObserver(es => { es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); e.target.querySelectorAll('[data-count]').forEach(el => { if (!el._c) { el._c = true; ctr(el, +el.dataset.count); } }); } }); }, { threshold: 0.12 });
+        document.querySelectorAll('[data-reveal]').forEach(el => io.observe(el));
+        document.querySelectorAll('.hero-stats, .stats-row').forEach(el => io.observe(el));
+        function ctr(el, t, d = 1200) { const s = Date.now(); (function tick() { const p = Math.min((Date.now() - s) / d, 1); el.textContent = Math.round((1 - Math.pow(1 - p, 3)) * t); if (p < 1) requestAnimationFrame(tick); else el.textContent = t; })(); }
+        fetch('https://api.github.com/users/kelvenapk').then(r=>r.json()).then(d=>{if(d.avatar_url)document.getElementById('creator-avatar').src=d.avatar_url;if(d.name)document.getElementById('creator-name').textContent=d.name;else if(d.login)document.getElementById('creator-name').textContent=d.login}).catch(()=>{});
+        window.addEventListener('load',()=>{renderPBs();renderFAQ();setTimeout(()=>document.getElementById('loader').classList.add('gone'),2100)});
+
+        const dot = document.createElement('div');
+        dot.className = 'cursor-dot';
+        const ring = document.createElement('div');
+        ring.className = 'cursor-ring';
+        document.body.appendChild(dot);
+        document.body.appendChild(ring);
+        let cx = 0, cy = 0, rx = 0, ry = 0;
+        document.addEventListener('mousemove', e => {
+            cx = e.clientX;
+            cy = e.clientY;
+            dot.style.left = cx - 4 + 'px';
+            dot.style.top = cy - 4 + 'px';
+        });
+        function animRing() {
+            rx += (cx - rx) * 0.15;
+            ry += (cy - ry) * 0.15;
+            ring.style.left = rx - 10 + 'px';
+            ring.style.top = ry - 10 + 'px';
+            requestAnimationFrame(animRing);
+        }
+        animRing();
+        document.querySelectorAll('a, button, .feat-card, .pbc, .faq-q').forEach(el => {
+            el.addEventListener('mouseenter', () => { dot.classList.add('hover'); ring.classList.add('hover'); });
+            el.addEventListener('mouseleave', () => { dot.classList.remove('hover'); ring.classList.remove('hover'); });
+        });
+
+        const navProg = document.getElementById('nav-progress');
+        window.addEventListener('scroll', () => {
+            const h = document.documentElement.scrollHeight - window.innerHeight;
+            navProg.style.width = (scrollY / h * 100) + '%';
+        }, { passive: true });
+
+        const parallaxLayers = document.querySelectorAll('[data-speed]');
+        window.addEventListener('scroll', () => {
+            const sy = window.scrollY;
+            parallaxLayers.forEach(layer => {
+                const speed = parseFloat(layer.dataset.speed);
+                layer.style.transform = `translateY(${sy * speed}px)`;
+            });
+        }, { passive: true });
+
+        document.querySelectorAll('.btn-main, .btn-ghost, .pbc-dl').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                const ripple = document.createElement('span');
+                const r = this.getBoundingClientRect();
+                const size = Math.max(r.width, r.height);
+                ripple.style.cssText = `position:absolute;width:${size}px;height:${size}px;left:${e.clientX - r.left - size/2}px;top:${e.clientY - r.top - size/2}px;background:rgba(255,255,255,.3);border-radius:50%;animation:ripple .6s linear;pointer-events:none`;
+                this.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 600);
+            });
+        });
+
+        document.querySelectorAll('.btn-main, .nav-cta, .pbc-dl').forEach(btn => {
+            btn.addEventListener('mousemove', e => {
+                const r = btn.getBoundingClientRect();
+                const x = e.clientX - r.left - r.width / 2;
+                const y = e.clientY - r.top - r.height / 2;
+                btn.style.transform = `translate(${x * 0.15}px, ${y * 0.15}px) scale(1.02)`;
+            });
+            btn.addEventListener('mouseleave', () => { btn.style.transform = ''; });
+        });
+    </script>
+</body>
+</html>

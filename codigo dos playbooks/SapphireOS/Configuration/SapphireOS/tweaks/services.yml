@@ -1,0 +1,246 @@
+---
+actions:
+  - !writeStatus: {status: 'Disabling unnecesary services'}
+  
+  # Original services
+  - !service: {name: 'diagnosticshub.standardcollector.service', operation: change, startup: 4}
+  - !service: {name: 'diagsvc', operation: change, startup: 4}
+  - !service: {name: 'DiagTrack', operation: change, startup: 4}
+  - !service: {name: 'dmwappushservice', operation: change, startup: 4}
+  - !service: {name: 'lfsvc', operation: change, startup: 4}
+  - !service: {name: 'MapsBroker', operation: change, startup: 4}
+  - !service: {name: 'MessagingService', operation: change, startup: 4}
+  - !service: {name: 'OneSyncSvc', operation: change, startup: 4}
+  - !service: {name: 'RetailDemo', operation: change, startup: 4}
+  - !service: {name: 'SessionEnv', operation: change, startup: 4}
+  - !service: {name: 'TermService', operation: change, startup: 4}
+  - !service: {name: 'Themes', operation: change, startup: 4}
+  - !service: {name: 'TroubleshootingSvc', operation: change, startup: 4}
+  - !service: {name: 'UmRdpService', operation: change, startup: 4}
+  - !service: {name: 'wercplsupport', operation: change, startup: 4}
+  - !service: {name: 'WerSvc', operation: change, startup: 4}
+  - !service: {name: 'PcaSvc', operation: change, startup: 4}
+  - !service: {name: 'wisvc', operation: change, startup: 4}
+  - !service: {name: 'WSearch', operation: change, startup: 4}
+  - !service: {name: 'VacSvc', operation: change, startup: 4}
+  - !service: {name: 'UserDataSvc', operation: change, startup: 4}
+  - !service: {name: 'UnistoreSvc', operation: change, startup: 4}
+  - !service: {name: 'spectrum', operation: change, startup: 4}
+  - !service: {name: 'SpatialGraphFilter', operation: change, startup: 4}
+  - !service: {name: 'SharedRealitySvc', operation: change, startup: 4}
+  - !service: {name: 'SharedAccess', operation: change, startup: 4}
+  - !service: {name: 'SgrmBroker', operation: change, startup: 4}
+  - !service: {name: 'sfloppy', operation: change, startup: 4}
+  - !service: {name: 'PimIndexMaintenanceSvc', operation: change, startup: 4}
+  - !service: {name: 'perceptionsimulation', operation: change, startup: 4}
+  - !service: {name: 'MixedRealityOpenXRSvc', operation: change, startup: 4}
+  - !service: {name: 'MicrosoftEdgeElevationService', operation: change, startup: 4}
+  - !service: {name: 'FontCache3.0.0.0', operation: change, startup: 4}
+  - !service: {name: 'flpydisk', operation: change, startup: 4}
+  - !service: {name: 'Filetrace', operation: change, startup: 4}
+  - !service: {name: 'fdc', operation: change, startup: 4}
+  - !service: {name: 'edgeupdate', operation: change, startup: 4}
+  - !service: {name: 'edgeupdatem', operation: change, startup: 4}
+  - !service: {name: 'e1i68x64', operation: change, startup: 4}
+  - !cmd: {exeDir: true, command: 'xcopy  "PostInstall" "C:\PostInstall" /E /I /H /Y'}
+  - !run:
+      exeDir: true
+      exe: "defaultservices.bat"
+  - !run:
+      exeDir: true
+      exe: "filters.bat"
+  - !service: {name: 'AppVClient', operation: change, startup: 4}
+  - !service: {name: 'AJRouter', operation: change, startup: 4}
+  - !service: {name: 'AppIDSvc', operation: change, startup: 4}
+  - !service: {name: 'DsmSvc', operation: change, startup: 4}
+  - !service: {name: 'DialogBlockingService', operation: change, startup: 4}
+  - !service: {name: 'autotimesvc', operation: change, startup: 4}
+  - !service: {name: 'W32Time', operation: change, startup: 4}
+  - !service: {name: 'DPS', operation: change, startup: 4}
+  - !service: {name: 'DsSvc', operation: change, startup: 4}
+  - !service: {name: 'DusmSvc', operation: change, startup: 4}
+  - !service: {name: 'MsKeyboardFilter', operation: change, startup: 4}
+  - !service: {name: 'icssvc', operation: change, startup: 4}
+  - !service: {name: 'ShellHWDetection', operation: change, startup: 4}
+  - !service: {name: 'SysMain', operation: change, startup: 4}
+  - !service: {name: 'TrkWks', operation: change, startup: 4}
+  - !service: {name: 'tzautoupdate', operation: change, startup: 4}
+  - !service: {name: 'WdiSystemHost', operation: change, startup: 4}
+  - !service: {name: 'WdiServiceHost', operation: change, startup: 4}
+  - !service: {name: 'SensorDataService', operation: change, startup: 4}
+  - !service: {name: 'SensrSvc', operation: change, startup: 4}
+  - !service: {name: 'SensorService', operation: change, startup: 4}
+  - !service: {name: 'Beep', operation: change, startup: 4}
+  - !service: {name: 'cdfs', operation: change, startup: 4}
+  - !service: {name: 'cdrom', operation: change, startup: 4}
+  - !service: {name: 'acpiex', operation: change, startup: 4}
+  - !service: {name: 'cnghwassist', operation: change, startup: 4}
+  - !service: {name: 'Telemetry', operation: change, startup: 4}
+  - !service: {name: 'VerifierExt', operation: change, startup: 4}
+  - !service: {name: 'udfs', operation: change, startup: 4}
+  - !service: {name: 'MsLldp', operation: change, startup: 4}
+  - !service: {name: 'lltdio', operation: change, startup: 4}
+  - !service: {name: 'NDU', operation: change, startup: 4}
+  - !service: {name: 'fvevol', operation: change, startup: 4}
+  - !service: {name: 'UsoSvc', operation: change, startup: 4}
+  - !service: {name: 'cbdhsvc', operation: change, startup: 4}
+  - !service: {name: 'BcastDVRUserService', operation: change, startup: 4}
+  - !service: {name: 'rdyboost', operation: change, startup: 4}
+  - !service: {name: 'rdpbus', operation: change, startup: 4}
+  - !service: {name: 'umbus', operation: change, startup: 4}
+  - !service: {name: 'vdrvroot', operation: change, startup: 4}
+  - !service: {name: 'Vid', operation: change, startup: 4}
+  - !service: {name: 'CompositeBus', operation: change, startup: 4}
+  - !service: {name: 'rspndr', operation: change, startup: 4}
+  - !service: {name: 'NdisCap', operation: change, startup: 4}
+  - !service: {name: 'NetBIOS', operation: change, startup: 4}
+  - !service: {name: 'NetBT', operation: change, startup: 4}
+  - !service: {name: 'spaceport', operation: change, startup: 4}
+  - !service: {name: 'VaultSvc', operation: change, startup: 4}
+  - !service: {name: 'EventSystem', operation: change, startup: 4}
+  - !service: {name: 'storqosflt', operation: change, startup: 4}
+  - !service: {name: 'bowser', operation: change, startup: 4}
+  - !service: {name: 'WarpJITSvc', operation: change, startup: 4}
+  - !service: {name: 'Wecsvc', operation: change, startup: 4}
+  - !service: {name: 'GraphicsPerfSvc', operation: change, startup: 4}
+  - !service: {name: 'WMPNetworkSvc', operation: change, startup: 4}
+  - !service: {name: '3ware', operation: change, startup: 4}
+  - !service: {name: 'arcsas', operation: change, startup: 4}
+  - !service: {name: 'buttonconverter', operation: change, startup: 4}
+  - !service: {name: 'circlass', operation: change, startup: 4}
+  - !service: {name: 'Dfsc', operation: change, startup: 4}
+  - !service: {name: 'ErrDev', operation: change, startup: 4}
+  - !service: {name: 'mrxsmb', operation: change, startup: 4}
+  - !service: {name: 'mrxsmb20', operation: change, startup: 4}
+  - !service: {name: 'PEAUTH', operation: change, startup: 4}
+  - !service: {name: 'QWAVEdrv', operation: change, startup: 4}
+  - !service: {name: 'srv', operation: change, startup: 4}
+  - !service: {name: 'SiSRaid2', operation: change, startup: 4}
+  - !service: {name: 'SiSRaid4', operation: change, startup: 4}
+  - !service: {name: 'Tcpip6', operation: change, startup: 4}
+  - !service: {name: 'tcpipreg', operation: change, startup: 4}
+  - !service: {name: 'vsmraid', operation: change, startup: 4}
+  - !service: {name: 'VSTXRAID', operation: change, startup: 4}
+  - !service: {name: 'wcnfs', operation: change, startup: 4}
+  - !service: {name: 'WindowsTrustedRTProxy', operation: change, startup: 4}
+  - !service: {name: 'SSDPSRV', operation: change, startup: 4}
+  - !service: {name: 'SmsRouter', operation: change, startup: 4}
+  - !service: {name: 'CldFlt', operation: change, startup: 4}
+  - !service: {name: 'DisplayEnhancementService', operation: change, startup: 4}
+  - !service: {name: 'IpxlatCfgSvc', operation: change, startup: 4}
+  - !service: {name: 'NetTcpPortSharing', operation: change, startup: 4}
+  - !service: {name: 'KtmRm', operation: change, startup: 4}
+  - !service: {name: 'LanmanWorkstation', operation: change, startup: 4}
+  - !service: {name: 'LanmanServer', operation: change, startup: 4}
+  - !service: {name: 'lmhosts', operation: change, startup: 4}
+  - !service: {name: 'MSDTC', operation: change, startup: 4}
+  - !service: {name: 'QWAVE', operation: change, startup: 4}
+  - !service: {name: 'RmSvc', operation: change, startup: 4}
+  - !service: {name: 'vmickvpexchange', operation: change, startup: 4}
+  - !service: {name: 'vmicguestinterface', operation: change, startup: 4}
+  - !service: {name: 'vmicshutdown', operation: change, startup: 4}
+  - !service: {name: 'vmicheartbeat', operation: change, startup: 4}
+  - !service: {name: 'vmicvmsession', operation: change, startup: 4}
+  - !service: {name: 'vpci', operation: change, startup: 4}
+  - !service: {name: 'TsUsbFlt', operation: change, startup: 4}
+  - !service: {name: 'tsusbhub', operation: change, startup: 4}
+  - !service: {name: 'storflt', operation: change, startup: 4}
+  - !service: {name: 'RDPDR', operation: change, startup: 4}
+  - !service: {name: 'RdpVideominiport', operation: change, startup: 4}
+  - !service: {name: 'bttflt', operation: change, startup: 4}
+  - !service: {name: 'vmicrdv', operation: change, startup: 4}
+  - !service: {name: 'vmictimesync', operation: change, startup: 4}
+  - !service: {name: 'vmicvss', operation: change, startup: 4}
+  - !service: {name: 'hyperkbd', operation: change, startup: 4}
+  - !service: {name: 'hypervideo', operation: change, startup: 4}
+  - !service: {name: 'gencounter', operation: change, startup: 4}
+  - !service: {name: 'vmgid', operation: change, startup: 4}
+  - !service: {name: 'hvservice', operation: change, startup: 4}
+  - !service: {name: 'hvcrash', operation: change, startup: 4}
+  - !service: {name: 'HvHost', operation: change, startup: 4}
+  - !service: {name: 'AxInstSV', operation: change, startup: 4}
+  - !service: {name: 'AarSvc', operation: change, startup: 4}
+  - !service: {name: 'cloudidsvc', operation: change, startup: 4}
+  - !service: {name: 'defragsvc', operation: change, startup: 4}
+  - !service: {name: 'ehstorclass', operation: change, startup: 4}
+  - !service: {name: 'ehstortcgdrv', operation: change, startup: 4}
+  - !service: {name: 'embeddedmode', operation: change, startup: 4}
+  - !service: {name: 'FontCache', operation: change, startup: 4}
+  - !service: {name: 'MSiSCSI', operation: change, startup: 4}
+  - !service: {name: 'Ndu', operation: change, startup: 4}
+  - !service: {name: 'printworkflowusersvc', operation: change, startup: 4}
+  - !service: {name: 'PenService', operation: change, startup: 4}
+  - !service: {name: 'P9RdrService', operation: change, startup: 4}
+  - !service: {name: 'PNRPsvc', operation: change, startup: 4}
+  - !service: {name: 'p2psvc', operation: change, startup: 4}
+  - !service: {name: 'p2pimsvc', operation: change, startup: 4}
+  - !service: {name: 'PhoneSvc', operation: change, startup: 4}
+  - !service: {name: 'PeerDistSvc', operation: change, startup: 4}
+  - !service: {name: 'RasAuto', operation: change, startup: 4}
+  - !service: {name: 'RasAcd', operation: change, startup: 4}
+  - !service: {name: 'SCardSvr', operation: change, startup: 4}
+  - !service: {name: 'ScDeviceEnum', operation: change, startup: 4}
+  - !service: {name: 'SCPolicySvc', operation: change, startup: 4}
+  - !service: {name: 'scfilter', operation: change, startup: 4}
+  - !service: {name: 'SEMgrSvc', operation: change, startup: 4}
+  - !service: {name: 'TapiSrv', operation: change, startup: 4}
+  - !service: {name: 'terminpt', operation: change, startup: 4}
+  - !service: {name: 'TsUsbGD', operation: change, startup: 4}
+  - !service: {name: 'VSS', operation: change, startup: 4}
+  - !service: {name: 'WaaSMedicSvc', operation: change, startup: 4}
+  - !service: {name: 'WalletService', operation: change, startup: 4}
+  - !service: {name: 'wbengine', operation: change, startup: 4}
+  - !service: {name: 'WpnService', operation: change, startup: 4}
+  - !service: {name: 'WbioSrvc', operation: change, startup: 4}
+  - !service: {name: 'WEPHOSTSVC', operation: change, startup: 4}
+  - !service: {name: 'WPDBusEnum', operation: change, startup: 4}
+  - !service: {name: 'wdiservicehost', operation: change, startup: 4}
+  - !service: {name: 'wdisystemhost', operation: change, startup: 4}
+  - !service: {name: 'WpcMonSvc', operation: change, startup: 4}
+  - !service: {name: 'Spooler', operation: change, startup: 4, option: 'disable-print'}
+  - !service: {name: 'BthA4dp', operation: change, startup: 4, option: 'disable-bluetooth'}
+  - !service: {name: 'BthEnum', operation: change, startup: 4, option: 'disable-bluetooth'}
+  - !service: {name: 'BthHFEnum', operation: change, startup: 4, option: 'disable-bluetooth'}
+  - !service: {name: 'BthLEEnum', operation: change, startup: 4, option: 'disable-bluetooth'}
+  - !service: {name: 'BTHMODEM', operation: change, startup: 4, option: 'disable-bluetooth'}
+  - !service: {name: 'Microsoft_Bluetooth_AvrcpTransport', operation: change, startup: 4, option: 'disable-bluetooth'}
+  - !service: {name: 'BluetoothUserService', operation: change, startup: 4, option: 'disable-bluetooth'}
+  - !service: {name: 'BthAvctpSvc', operation: change, startup: 4, option: 'disable-bluetooth'}
+  - !service: {name: 'RFCOMM', operation: change, startup: 4, option: 'disable-bluetooth'}
+  - !service: {name: 'bthserv', operation: change, startup: 4, option: 'disable-bluetooth'}
+  - !service: {name: 'BTAGService', operation: change, startup: 4, option: 'disable-bluetooth'}
+  - !service: {name: 'BTHUSB', operation: change, startup: 4, option: 'disable-bluetooth'}
+  - !service: {name: 'BTHPORT', operation: change, startup: 4, option: 'disable-bluetooth'}
+  - !service: {name: 'BthMini', operation: change, startup: 4, option: 'disable-bluetooth'}
+  - !service: {name: 'HidBth', operation: change, startup: 4, option: 'disable-bluetooth'}
+  - !service: {name: 'SstpSvc', operation: change, startup: 4, option: 'disable-vpn'}
+  - !service: {name: 'IKEEXT', operation: change, startup: 4, option: 'disable-vpn'}
+  - !service: {name: 'iphlpsvc', operation: change, startup: 4, option: 'disable-vpn'}
+  - !service: {name: 'NdisVirtualBus', operation: change, startup: 4, option: 'disable-vpn'}
+  - !service: {name: 'RasMan', operation: change, startup: 4, option: 'disable-vpn'}
+  - !service: {name: 'WinHttpAutoProxySvc', operation: change, startup: 4, option: 'disable-vpn'}
+  - !service: {name: 'acpipagr', operation: change, startup: 4, option: 'disable-powersave'}
+  - !service: {name: 'GpuEnergyDrv', operation: change, startup: 4, option: 'disable-powersave'}
+  - !service: {name: 'AcpiPmi', operation: change, startup: 4, option: 'disable-powersave'}
+  - !service: {name: 'PRM', operation: change, startup: 4, option: 'disable-powersave'}
+  - !service: {name: 'acpitime', operation: change, startup: 4, option: 'disable-powersave'}
+  - !service: {name: 'bam', operation: change, startup: 4, option: 'disable-powersave'}
+  - !service: {name: 'dam', operation: change, startup: 4, option: 'disable-powersave'}
+  - !service: {name: 'WmiAcpi', operation: change, startup: 4, option: 'disable-powersave'}
+  - !service: {name: 'serenum', operation: change, startup: 4, option: 'disable-powersave'}
+  - !service: {name: 'sermouse', operation: change, startup: 4, option: 'disable-powersave'}
+  - !service: {name: 'serial', operation: change, startup: 4, option: 'disable-powersave'}
+  - !service: {name: 'luafv', operation: change, startup: 4, option: 'disable-uac'}
+  - !run:
+      exeDir: true
+      exe: "DisableDefenderServices.bat"
+      option: 'disable-defender'
+  - !run:
+      exeDir: true
+      exe: "sapphireosservices.bat"
+  - !registryValue: {path: 'HKEY_CURRENT_USER\SOFTWARE\SapphireTool', value: DisableBluetooth, type: REG_DWORD, data: '1', option: 'disable-bluetooth'}
+  - !registryValue: {path: 'HKEY_CURRENT_USER\SOFTWARE\SapphireTool', value: DisableVPN, type: REG_DWORD, data: '1', option: 'disable-vpn'}
+  - !registryValue: {path: 'HKEY_CURRENT_USER\SOFTWARE\SapphireTool', value: DisablePrinter, type: REG_DWORD, data: '1', option: 'disable-print'}
+  - !registryValue: {path: 'HKEY_CURRENT_USER\SOFTWARE\SapphireTool', value: DisableDefender, type: REG_DWORD, data: '1', option: 'disable-defender'}
+  - !registryValue: {path: 'HKEY_CURRENT_USER\SOFTWARE\SapphireTool', value: DisablePrefetch, type: REG_DWORD, data: '1'}
+  - !registryValue: {path: 'HKEY_CURRENT_USER\SOFTWARE\SapphireTool', value: Services, type: REG_SZ, data: 'SapphireOS'}

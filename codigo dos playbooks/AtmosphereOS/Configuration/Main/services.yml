@@ -1,0 +1,68 @@
+---
+title: Services and Drivers
+description: Configures services and drivers to reduce background system resource utilization
+actions:
+  # ----------------------------------
+  # - Potential references           -
+  # - Mostly upon IoT recommandation -
+  # ----------------------------------
+  # https://learn.microsoft.com/en-us/windows-server/remote/remote-desktop-services/rds-vdi-recommendations-2004
+  # https://learn.microsoft.com/en-us/windows-server/security/windows-services/security-guidelines-for-disabling-system-services-in-windows-server
+  # https://learn.microsoft.com/en-us/windows/iot/iot-enterprise/optimize/services
+
+  # Back up default Windows serivces & drivers
+  - !powerShell:
+    command: |
+      .\BACKUP.ps1 -FilePath """$([Environment]::GetFolderPath('Windows'))\AtmosphereModules\Other\winServices.reg"""
+    wait: true
+    exeDir: true
+
+  ##############################################################################################
+  ## SCRIPTS                                                                                  ##
+  ##############################################################################################
+
+  - !status: {status: 'Disabling File Sharing'}
+  - !powerShell:
+    command: '.\AtmosphereModules\Scripts\ScriptWrappers\DisableFileSharing.ps1 -Silent'
+    exeDir: true
+    wait: true
+    runas: currentUserElevated
+
+  - !status: {status: 'Disabling Location'}
+  - !cmd:
+    command: '"AtmosphereDesktop\3. General Configuration\Location\Disable Location (default).cmd" /silent'
+    exeDir: true
+    wait: true
+
+  - !status: {status: 'Configuring Indexing'}
+  - !cmd:
+    command: '"AtmosphereDesktop\3. General Configuration\Search Indexing\Minimal Search Indexing (default).cmd" /silent'
+    exeDir: true
+    wait: true
+
+  ##############################################################################################
+  ## SERVICES                                                                                 ##
+  ##############################################################################################
+
+  - !status: {status: 'Configuring services'}
+  - !service: {name: "WSearch", operation: change, startup: 4, option: 'openshell'}  
+#  - !service: {name: "BITS", operation: change, startup: 3} # i need to research this a bit
+    # Firewall rules to prevent the startmenu from talking
+  - !registryValue: {path: 'HKLM\SYSTEM\ControlSet001\Services\SharedAccess\Parameters\FirewallPolicy\FirewallRules', value: 'Block SearchApp', type: REG_SZ, data: 'v2.32|Action=Block|Active=TRUE|Dir=Out|RA42=IntErnet|RA62=IntErnet|App=%SystemRoot%\SystemApps\Microsoft.Windows.Search_cw5n1h2txyewy\SearchApp.exe|Name=Block SearchApp|Desc=Block Cortana Outbound UDP/TCP Traffic|'}
+  - !registryValue: {path: 'HKLM\SYSTEM\ControlSet001\Services\SharedAccess\Parameters\FirewallPolicy\FirewallRules', value: 'Block SearchHost', type: REG_SZ, data: 'v2.32|Action=Block|Active=TRUE|Dir=Out|RA42=IntErnet|RA62=IntErnet|App=%SystemRoot%\SystemApps\MicrosoftWindows.Client.CBS_cw5n1h2txyewy\SearchHost.exe|Name=Block SearchHost|Desc=Block Cortana Outbound UDP/TCP Traffic|'}
+  - !registryValue: {path: 'HKLM\SYSTEM\ControlSet001\Services\SharedAccess\Parameters\FirewallPolicy\FirewallRules', value: 'Block StartMenuExperienceHost', type: REG_SZ, data: 'v2.32|Action=Block|Active=TRUE|Dir=Out|RA42=IntErnet|RA62=IntErnet|App=%SystemRoot%\SystemApps\Microsoft.Windows.StartMenuExperienceHost_cw5n1h2txyewy\StartMenuExperienceHost.exe|Name=Block StartMenuExperienceHost|Desc=Block Cortana Outbound UDP/TCP Traffic|'}
+    # Block Windows Settings from making connections
+  - !registryValue: {path: 'HKLM\SYSTEM\ControlSet001\Services\SharedAccess\Parameters\FirewallPolicy\FirewallRules', value: 'Block SystemSettings', type: REG_SZ, data: 'v2.32|Action=Block|Active=TRUE|Dir=Out|RA42=IntErnet|RA62=IntErnet|App=%SystemRoot%\ImmersiveControlPanel\SystemSettings.exe|Name=Block SystemSettings|Desc=Block Windows Settings Outbound UDP/TCP Traffic|'}
+    # Block explorer from making connections, most notably when selecting "Home"
+  - !registryValue: {path: 'HKLM\SYSTEM\ControlSet001\Services\SharedAccess\Parameters\FirewallPolicy\FirewallRules', value: 'Block Explorer', type: REG_SZ, data: 'v2.32|Action=Block|Active=TRUE|Dir=Out|RA42=IntErnet|RA62=IntErnet|App=%SystemRoot%\explorer.exe|Name=Block Explorer|Desc=Block Explorer Outbound UDP/TCP Traffic|'}
+
+  ##############################################################################################
+  ## DRIVERS                                                                                  ##
+  ##############################################################################################
+
+  - !status: {status: 'Configuring drivers'}
+
+  - !service: {name: 'GpuEnergyDrv', operation: change, startup: 4}
+    # NetBios support can be enabled with the file sharing script
+  - !service: {name: 'NetBT', operation: change, startup: 4}
+  - !service: {name: 'Telemetry', operation: change, startup: 4}
